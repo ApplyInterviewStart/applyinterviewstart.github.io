@@ -1,4 +1,3 @@
-// Replace with your Stripe publishable key
 const stripe = Stripe("pk_test_51Sm7lWAdRfgqgRAmHFC3ixdrrrnLNoGklLSEOIgVwz951N2V87jC6hcfvri3q8dge01fO9KbIRmiv8833r10eqd3003ZRcQs3s");
 
 async function buyProduct(priceId) {
