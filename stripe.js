@@ -1,5 +1,5 @@
 // ⚠️ USE YOUR PUBLISHABLE KEY (starts with pk_test_ or pk_live_)
-const stripe = Stripe("pk_test_51Sm7lWAdRfgqgRAmHFC3ixdrrrnLNoGklLSEOIgVwz951N2V87jC6hcfvri3q8dge01fO9KbIRmiv8833r10eqd3003ZRcQs3s");
+const stripe = Stripe("pk_live_51Sm7lWAdRfgqgRAmkkprO4VYYaiNWKJUyf88oxpNUynGT04Upm5WFKaFdCpZnKWdq4GoRNR7xR9nYJE4TIkyaKdk00vlyLXjQJ");
 
 // Generic function to handle checkout
 async function buyProduct(priceId) {
