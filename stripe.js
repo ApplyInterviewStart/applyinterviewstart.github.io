@@ -3,7 +3,7 @@ const stripe = Stripe("pk_live_51Sm7lWAdRfgqgRAmkkprO4VYYaiNWKJUyf88oxpNUynGT04U
 async function buyProduct(priceId) {
   try {
     const response = await fetch(
-      "https://YOUR-RENDER-URL.onrender.https://apply-interview-start.onrender.com//create-checkout-session",
+      "https://apply-interview-start.onrender.com//create-checkout-session",
       {
         method: "POST",
         headers: {
