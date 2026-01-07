@@ -1,36 +1,35 @@
-// Install dependencies first:
-// npm init -y
-// npm install express stripe cors dotenv
+import express from "express";
+import Stripe from "stripe";
+import cors from "cors";
 
-const express = require("express");
 const app = express();
-require('dotenv').config(); // ← THIS reads the .env file
-
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
- // Live secret key
-const cors = require("cors");
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 app.use(cors());
 app.use(express.json());
 
 app.post("/create-checkout-session", async (req, res) => {
-  const { priceId } = req.body;
-
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
-      line_items: [{ price: priceId, quantity: 1 }],
+      line_items: [
+        {
+          price: req.body.priceId,
+          quantity: 1,
+        },
+      ],
       mode: "payment",
-      success_url: "https://applyinterviewstart.com?success=true",
-      cancel_url: "https://applyinterviewstart.com?canceled=true",
+      success_url: "https://applyinterviewstart.com/?success=true",
+      cancel_url: "https://applyinterviewstart.com/?cancelled=true",
     });
 
-    res.json({ id: session.id });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: error.message });
+    res.json({ url: session.url });
+  } catch (err) {
+    console.error(err); // this will show the exact Stripe error in Render logs
+    res.status(500).json({ error: err.message });
   }
 });
 
-const PORT = process.env.PORT || 4242;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(3000, () => {
+  console.log("Server running on port 3000");
+});
