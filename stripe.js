@@ -3,7 +3,7 @@ const stripe = Stripe("pk_live_51Sm7lWAdRfgqgRAmkkprO4VYYaiNWKJUyf88oxpNUynGT04U
 async function buyProduct(priceId) {
   try {
     const response = await fetch(
-      "https://apply-interview-start.onrender.com//create-checkout-session",
+      "https://apply-interview-start.onrender.com/create-checkout-session",
       {
         method: "POST",
         headers: {
@@ -16,7 +16,7 @@ async function buyProduct(priceId) {
     const session = await response.json();
 
     if (!session.id) {
-      console.error(session);
+      console.error("Session error:", session);
       alert("Stripe session failed");
       return;
     }
@@ -25,7 +25,7 @@ async function buyProduct(priceId) {
       sessionId: session.id,
     });
   } catch (error) {
-    console.error(error);
+    console.error("Checkout error:", error);
     alert("Checkout error");
   }
 }
