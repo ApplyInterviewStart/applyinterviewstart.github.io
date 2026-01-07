@@ -1,4 +1,4 @@
-const stripe = Stripe("pk_live_51Sm7lWAdRfgqgRAmkkprO4VYYaiNWKJUyf88oxpNUynGT04Upm5WFKaFdCpZnKWdq4GoRNR7xR9nYJE4TIkyaKdk00vlyLXjQJ");
+const stripe = Stripe("pk_test_51Sm7lWAdRfgqgRAmHFC3ixdrrrnLNoGklLSEOIgVwz951N2V87jC6hcfvri3q8dge01fO9KbIRmiv8833r10eqd3003ZRcQs3s");
 
 async function buyProduct(priceId) {
   try {
@@ -31,13 +31,14 @@ async function buyProduct(priceId) {
 }
 
 function buyResume() {
-  buyProduct("price_1SmSivAdRfgqgRAmFiI3jHDl");
+  buyProduct("price_1SmuSIAdRfgqgRAmiM2CKoFV"); // Replace with live Price ID
 }
 
 function buyInterview() {
-  buyProduct("price_1SmSitAdRfgqgRAmOKSI7wby");
+  buyProduct("price_1SmuSdAdRfgqgRAmLlpOEYAl"); // Replace with live Price ID
 }
 
 function buyBundle() {
-  buyProduct("price_1SmSirAdRfgqgRAmru8aWfIw");
+  buyProduct("price_1SmuSoAdRfgqgRAmj6VQOjAJ"); // Replace with live Price ID
 }
+
