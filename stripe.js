@@ -1,29 +1,59 @@
-// ⚠️ LIVE Stripe Publishable Key
-const stripe = Stripe("pk_live_51Sm7lWAdRfgqgRAmkkprO4VYYaiNWKJUyf88oxpNUynGT04Upm5WFKaFdCpZnKWdq4GoRNR7xR9nYJE4TIkyaKdk00vlyLXjQJ");
+// stripe.js
+const stripe = Stripe("// stripe.js");
+const stripe = Stripe("pk_live_YOUR_PUBLISHABLE_KEY"); // your live publishable key
 
-// Generic function to handle checkout
 async function buyProduct(priceId) {
-  const { error } = await stripe.redirectToCheckout({
-    lineItems: [{ price: priceId, quantity: 1 }],
-    mode: "payment",
-    successUrl: window.location.href + "?success=true",
-    cancelUrl: window.location.href + "?canceled=true",
-  });
+  try {
+    const response = await fetch("https://applyinterviewstart/create-checkout-session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ priceId }),
+    });
 
-  if (error) {
-    alert(error.message);
+    const session = await response.json();
+    await stripe.redirectToCheckout({ sessionId: session.id });
+  } catch (err) {
+    console.error(err);
+    alert("Stripe checkout failed: " + err.message);
   }
 }
 
-// Buttons
 function buyResume() {
-  buyProduct("price_1SmSivAdRfgqgRAmFiI3jHDl"); // Resume service live price ID
+  buyProduct("price_1SmSivAdRfgqgRAmFiI3jHDl");
 }
 
 function buyInterview() {
-  buyProduct("price_1SmSitAdRfgqgRAmOKSI7wby"); // Interview prep live price ID
+  buyProduct("price_1SmSitAdRfgqgRAmOKSI7wby");
 }
 
 function buyBundle() {
-  buyProduct("price_1SmSirAdRfgqgRAmru8aWfIw"); // Bundle live price ID
+  buyProduct("price_1SmSirAdRfgqgRAmru8aWfIw");
+}
+
+async function buyProduct(priceId) {
+  try {
+    const response = await fetch("https://YOUR_BACKEND_DOMAIN/create-checkout-session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ priceId }),
+    });
+
+    const session = await response.json();
+    await stripe.redirectToCheckout({ sessionId: session.id });
+  } catch (err) {
+    console.error(err);
+    alert("Stripe checkout failed: " + err.message);
+  }
+}
+
+function buyResume() {
+  buyProduct("price_1SmSivAdRfgqgRAmFiI3jHDl");
+}
+
+function buyInterview() {
+  buyProduct("price_1SmSitAdRfgqgRAmOKSI7wby");
+}
+
+function buyBundle() {
+  buyProduct("price_1SmSirAdRfgqgRAmru8aWfIw");
 }
