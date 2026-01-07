@@ -4,12 +4,12 @@ const Stripe = require("stripe");
 const cors = require("cors");
 
 const app = express();
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY); // from Render env variables
 
 app.use(cors());
 app.use(express.json());
 
-// Create checkout session
+// Checkout session endpoint
 app.post("/create-checkout-session", async (req, res) => {
   const { priceId } = req.body;
 
