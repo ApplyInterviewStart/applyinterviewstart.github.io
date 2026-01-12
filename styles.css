@@ -108,3 +108,51 @@ footer {
   padding: 40px 20px;
   margin-top: 60px;
 }
+
+
+.subtle {
+  color: #777;
+  font-size: 0.9rem;
+}
+
+.step-card {
+  background: #ffffff;
+  padding: 24px;
+  margin: 20px auto;
+  max-width: 600px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.step-card.highlight {
+  border: 2px solid #4f46e5;
+}
+
+.step-card.free {
+  background: #f9fafb;
+}
+
+.price.subtle {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.secondary-button {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 18px;
+  border: 1px solid #4f46e5;
+  border-radius: 6px;
+  text-decoration: none;
+  color: #4f46e5;
+  font-weight: 600;
+}
+
+.disclaimer {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 20px;
+  font-size: 0.85rem;
+  color: #666;
+  text-align: center;
+}

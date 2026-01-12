@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Career Questions – Resume Builder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    textarea { width: 100%; min-height: 120px; margin-bottom: 20px; }
+    .actions { margin-top: 30px; }
+  </style>
+</head>
+<body>
+
+<header class="hero">
+  <h1>Career Questions</h1>
+  <p>More details means a more precise resume. You can save and return anytime, no rush.</p>
+</header>
+
+<main class="services">
+
+  <form id="cq-form">
+
+    <label>Current or most recent role</label>
+    <textarea name="role"></textarea>
+
+    <label>Key responsibilities</label>
+    <textarea name="responsibilities"></textarea>
+
+    <label>Major accomplishments</label>
+    <textarea name="degrees or certifications?"></textarea>
+
+    <label>Target roles / industries</label>
+    <textarea name="targets"></textarea>
+
+    <label>Anything else I should know?</label>
+    <textarea name="notes"></textarea>
+
+    <div class="actions">
+      <button type="button" onclick="saveDraft()">Save for Later</button>
+      <button type="submit">Submit Questions</button>
+    </div>
+
+  </form>
+
+  <hr>
+
+  <p>
+    Prefer to talk instead?
+    <br>
+    <a href="thankyou.html" class="cta-button">Schedule a 30-Min Intake Call</a>
+  </p>
+
+</main>
+
+<script>
+  const form = document.getElementById("cq-form");
+
+  function saveDraft() {
+    const data = new FormData(form);
+    const obj = Object.fromEntries(data.entries());
+    localStorage.setItem("careerQuestionsDraft", JSON.stringify(obj));
+    alert("Saved. You can come back anytime.");
+  }
+
+  window.onload = () => {
+    const saved = localStorage.getItem("careerQuestionsDraft");
+    if (saved) {
+      const data = JSON.parse(saved);
+      for (let key in data) {
+        if (form.elements[key]) {
+          form.elements[key].value = data[key];
+        }
+      }
+    }
+  };
+</script>
+
+</body>
+</html>
