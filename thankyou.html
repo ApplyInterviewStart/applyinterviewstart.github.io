@@ -8,72 +8,67 @@
 </head>
 <body>
 
-  <header class="hero">
-    <h1>You're All Set 🎉</h1>
-    <p>
-      Your Resume Builder purchase was successful.
-      Please choose how you’d like to get started below.
-    </p>
-  </header>
+<header class="hero">
+  <h1>You're All Set 🎉</h1>
+  <p>Your Resume Builder purchase was successful.</p>
+  <p>Please choose how you’d like to get started.</p>
+</header>
 
-  <section class="next-steps">
+<section class="next-steps">
 
-    <!-- OPTION A: CAREER QUESTIONS -->
-    <div class="step-card highlight">
-      <h2>Option A (Recommended): Career Questions</h2>
-      <p>
-        Answer a detailed set of questions so I can build your resume
-        without needing a call.
-      </p>
+  <div class="step-card" id="optionA">
+    <h2>Option A (Recommended)</h2>
+    <p>Answer a few questions so we can make a powerful resume.</p>
+    <button class="cta-button" onclick="selectOption('A')">
+      Start Career Questions
+    </button>
+  </div>
 
-      <a href="career-questions.html" class="cta-button">
-        Start Career Questions
-      </a>
+  <div class="step-card" id="optionB">
+    <h2>Option B</h2>
+    <p>Prefer to talk instead? Schedule an intake call to give us the details.</p>
+
+    <button class="secondary-button" onclick="selectOption('B')">
+      Schedule Intake Call
+    </button>
+
+    <div id="calendly-container" style="display:none; margin-top:32px;">
+      <iframe
+        src="https://calendly.com/applyinterviewstart-4a8l/career-assessment-clone"
+        width="100%"
+        height="750"
+        frameborder="0">
+      </iframe>
     </div>
+  </div>
 
-    <!-- OPTION B: INTAKE CALL -->
-    <div class="step-card">
-      <h2>Option B: 30-Minute Intake Call</h2>
-      <p>
-        Prefer to talk it through instead?
-        You can schedule a one-time intake call instead of filling out questions.
-      </p>
+</section>
 
-      <button class="secondary-button" onclick="showCalendly()">
-        Choose Intake Call Instead
-      </button>
+<footer>
+  <p>Career services do not guarantee interviews or employment.</p>
+  <p><a href="index.html">Return to homepage</a></p>
+</footer>
 
-      <!-- Calendly Embed (hidden initially) -->
-      <div id="calendly-container" style="display:none; margin-top:20px;">
-        <!-- REPLACE THIS URL WITH YOUR CALENDLY LINK -->
-        <iframe
-          src="https://calendly.com/YOUR_CALENDLY_LINK/30min"
-          width="100%"
-          height="650"
-          frameborder="0">
-        </iframe>
+<script>
+  function selectOption(option) {
+    const optionA = document.getElementById("optionA");
+    const optionB = document.getElementById("optionB");
+    const calendly = document.getElementById("calendly-container");
 
-        <p class="subtle">
-          You can still complete Career Questions later if needed.
-        </p>
-      </div>
-    </div>
+    optionA.classList.remove("highlight");
+    optionB.classList.remove("highlight");
 
-  </section>
-
-  <footer class="disclaimer">
-    <p>
-      Career services provided do not guarantee interviews or employment.
-      Reasonable revisions and follow-ups are offered in good faith.
-    </p>
-    <p><a href="index.html">Return to homepage</a></p>
-  </footer>
-
-  <script>
-    function showCalendly() {
-      document.getElementById("calendly-container").style.display = "block";
+    if (option === "A") {
+      optionA.classList.add("highlight");
+      window.location.href = "career-questions.html";
     }
-  </script>
+
+    if (option === "B") {
+      optionB.classList.add("highlight");
+      calendly.style.display = "block";
+    }
+  }
+</script>
 
 </body>
 </html>

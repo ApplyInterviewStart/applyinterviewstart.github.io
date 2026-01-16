@@ -2,80 +2,261 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Career Questions – Resume Builder</title>
+  <title>Resume Builder – Career Questions</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <link rel="stylesheet" href="styles.css">
 
   <style>
-    textarea { width: 100%; min-height: 120px; margin-bottom: 20px; }
-    .actions { margin-top: 30px; }
+    .form-card { max-width: 980px; margin: 0 auto; }
+    .section { margin-top: 26px; padding-top: 6px; }
+    .section h2 { margin: 18px 0 10px; }
+    label { display: block; margin: 12px 0 6px; font-weight: 600; }
+    input, textarea, select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(0,0,0,0.15);
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    textarea { min-height: 110px; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 720px) { .row { grid-template-columns: 1fr; } }
+    .hint { font-size: 0.95rem; opacity: 0.85; margin-top: 4px; }
+    .job-block, .edu-block {
+      border: 1px solid rgba(0,0,0,0.10);
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 12px;
+    }
+    .actions { margin-top: 26px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+    .status { margin-top: 14px; font-size: 1rem; }
+    .small { font-size: 0.95rem; opacity: 0.85; }
+
+    /* Put "Prefer to talk instead" near the submit buttons, centered */
+    .callout {
+      margin-top: 18px;
+      text-align: center;
+      padding: 18px;
+      border: 1px solid rgba(0,0,0,0.12);
+      border-radius: 14px;
+    }
+    .callout p { margin: 0 0 12px; }
   </style>
 </head>
+
 <body>
 
 <header class="hero">
-  <h1>Career Questions</h1>
-  <p>More details means a more precise resume. You can save and return anytime, no rush.</p>
+  <h1>Resume Builder Intake Form</h1>
+  <p>We’ll use this information to build a strong resume. Short answers are fine — details are welcome.</p>
 </header>
 
-<main class="services">
+<main class="services form-card">
 
-  <form id="cq-form">
+  <form id="cq-form" class="step-card">
+    <!-- BASIC INFO -->
+    <div class="section">
+      <h2>Basic Info</h2>
 
-    <label>Current or most recent role</label>
-    <textarea name="role"></textarea>
+      <div class="row">
+        <div>
+          <label for="fullName">Full name</label>
+          <input id="fullName" name="fullName" type="text" required placeholder="First + Last">
+        </div>
 
-    <label>Key responsibilities</label>
-    <textarea name="responsibilities"></textarea>
+        <div>
+          <label for="clientEmail">Email</label>
+          <input id="clientEmail" name="clientEmail" type="email" required placeholder="example@email.com">
+        </div>
+      </div>
 
-    <label>Major accomplishments</label>
-    <textarea name="degrees or certifications?"></textarea>
+      <div class="row">
+        <div>
+          <label for="phone">Phone number</label>
+          <input id="phone" name="phone" type="tel" placeholder="(555) 555-5555">
+        </div>
 
-    <label>Target roles / industries</label>
-    <textarea name="targets"></textarea>
+        <div>
+          <label for="linkedin">LinkedIn (URL)</label>
+          <input id="linkedin" name="linkedin" type="url" placeholder="https://www.linkedin.com/in/yourname">
+        </div>
+      </div>
 
-    <label>Anything else I should know?</label>
-    <textarea name="notes"></textarea>
-
-    <div class="actions">
-      <button type="button" onclick="saveDraft()">Save for Later</button>
-      <button type="submit">Submit Questions</button>
+      <p class="hint">Tip: If you don’t have LinkedIn, leave it blank.</p>
     </div>
 
+    <!-- WORK EXPERIENCE -->
+    <div class="section">
+      <h2>Work Experience</h2>
+      <p class="small">Add up to 3 jobs (most recent first). If you have fewer, leave the rest blank.</p>
+
+      <div class="job-block">
+        <h3>Job #1</h3>
+        <div class="row">
+          <div>
+            <label for="job1Title">Title + Company</label>
+            <input id="job1Title" name="job1Title" type="text" placeholder="Registered Nurse — Kaiser Permanente">
+          </div>
+          <div>
+            <label for="job1Dates">Date range worked</label>
+            <input id="job1Dates" name="job1Dates" type="text" placeholder="Jan 2023 – Dec 2025">
+          </div>
+        </div>
+
+        <label for="job1Resp">Responsibilities & contributions</label>
+        <textarea id="job1Resp" name="job1Resp" placeholder="What you did, tools you used, types of work, impact…"></textarea>
+      </div>
+
+      <div class="job-block">
+        <h3>Job #2</h3>
+        <div class="row">
+          <div>
+            <label for="job2Title">Title + Company</label>
+            <input id="job2Title" name="job2Title" type="text">
+          </div>
+          <div>
+            <label for="job2Dates">Date range worked</label>
+            <input id="job2Dates" name="job2Dates" type="text">
+          </div>
+        </div>
+
+        <label for="job2Resp">Responsibilities & contributions</label>
+        <textarea id="job2Resp" name="job2Resp"></textarea>
+      </div>
+
+      <div class="job-block">
+        <h3>Job #3</h3>
+        <div class="row">
+          <div>
+            <label for="job3Title">Title + Company</label>
+            <input id="job3Title" name="job3Title" type="text">
+          </div>
+          <div>
+            <label for="job3Dates">Date range worked</label>
+            <input id="job3Dates" name="job3Dates" type="text">
+          </div>
+        </div>
+
+        <label for="job3Resp">Responsibilities & contributions</label>
+        <textarea id="job3Resp" name="job3Resp"></textarea>
+      </div>
+    </div>
+
+    <!-- EDUCATION / CERTS -->
+    <div class="section">
+      <h2>Education / Certifications</h2>
+      <p class="small">List up to 3 degrees or certifications.</p>
+
+      <div class="edu-block">
+        <h3>Degree/Certification #1</h3>
+        <div class="row">
+          <div>
+            <label for="edu1Name">Degree/Certification</label>
+            <input id="edu1Name" name="edu1Name" type="text" placeholder="B.S. Biology / CompTIA A+ / RN License">
+          </div>
+          <div>
+            <label for="edu1Date">Date obtained</label>
+            <input id="edu1Date" name="edu1Date" type="text" placeholder="May 2022">
+          </div>
+        </div>
+      </div>
+
+      <div class="edu-block">
+        <h3>Degree/Certification #2</h3>
+        <div class="row">
+          <div>
+            <label for="edu2Name">Degree/Certification</label>
+            <input id="edu2Name" name="edu2Name" type="text">
+          </div>
+          <div>
+            <label for="edu2Date">Date obtained</label>
+            <input id="edu2Date" name="edu2Date" type="text">
+          </div>
+        </div>
+      </div>
+
+      <div class="edu-block">
+        <h3>Degree/Certification #3</h3>
+        <div class="row">
+          <div>
+            <label for="edu3Name">Degree/Certification</label>
+            <input id="edu3Name" name="edu3Name" type="text">
+          </div>
+          <div>
+            <label for="edu3Date">Date obtained</label>
+            <input id="edu3Date" name="edu3Date" type="text">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SKILLS / HOBBIES -->
+    <div class="section">
+      <h2>Skills</h2>
+      <p class="small">List hard skills, tools, software, and industries (comma-separated is fine).</p>
+      <textarea name="skills" placeholder="Examples: Healthcare, nursing, EMR, Excel, PowerPoint, Python, carpentry, forklifts, shipping & deliveries…"></textarea>
+
+      <h2>Hobbies / Interests</h2>
+      <textarea name="hobbies" placeholder="Examples: climbing gyms, hiking, knitting, technology…"></textarea>
+    </div>
+
+    <!-- QUESTIONS -->
+    <div class="section">
+      <h2>Questions (What makes you stand out?)</h2>
+
+      <label for="qLab">Do you have laboratory or science experience?</label>
+      <textarea id="qLab" name="qLab"></textarea>
+
+      <label for="qData">Computers, data analysis, or technical tools?</label>
+      <textarea id="qData" name="qData"></textarea>
+
+      <label for="qTeams">Experience working in teams, leading projects, or management?</label>
+      <textarea id="qTeams" name="qTeams"></textarea>
+
+      <label for="qAwards">Any certifications, awards, or recognitions?</label>
+      <textarea id="qAwards" name="qAwards"></textarea>
+
+      <label for="qTemplate">Any specific goals or preferences for this resume?</label>
+      <textarea id="qTemplate" name="qTemplate" placeholder="Example: modern/clean, ATS-friendly, 1 page, emphasis on impact metrics…"></textarea>
+    </div>
+
+    <div class="actions">
+      <button type="submit" class="cta-button">Submit</button>
+      <a href="index.html" class="secondary-button">← Back to Home</a>
+    </div>
+
+    <!-- Moved up + centered -->
+    <div class="callout">
+      <p><strong>Prefer to talk instead?</strong></p>
+      <a href="thankyou-resume.html" class="cta-button">Schedule a 30-Minute Intake Call</a>
+    </div>
+
+    <div id="status" class="status" aria-live="polite"></div>
   </form>
-
-  <hr>
-
-  <p>
-    Prefer to talk instead?
-    <br>
-    <a href="thankyou.html" class="cta-button">Schedule a 30-Min Intake Call</a>
-  </p>
 
 </main>
 
 <script>
   const form = document.getElementById("cq-form");
+  const statusEl = document.getElementById("status");
 
-  function saveDraft() {
-    const data = new FormData(form);
-    const obj = Object.fromEntries(data.entries());
-    localStorage.setItem("careerQuestionsDraft", JSON.stringify(obj));
-    alert("Saved. You can come back anytime.");
-  }
+  // Stop old “draft” behavior from previous versions
+  // (This removes saved responses you were seeing.)
+  localStorage.removeItem("careerQuestionsDraft");
 
-  window.onload = () => {
-    const saved = localStorage.getItem("careerQuestionsDraft");
-    if (saved) {
-      const data = JSON.parse(saved);
-      for (let key in data) {
-        if (form.elements[key]) {
-          form.elements[key].value = data[key];
-        }
-      }
-    }
-  };
+  // We are pausing email/back-end submission for now.
+  // This makes Submit ALWAYS work and ALWAYS redirect home.
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    statusEl.textContent = "Submitted ✅ Redirecting to homepage…";
+    form.reset();
+
+    setTimeout(() => {
+      window.location.href = "index.html?submitted=true";
+    }, 700);
+  });
 </script>
 
 </body>

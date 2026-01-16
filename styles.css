@@ -225,6 +225,32 @@ form .button-row {
   justify-content: center;
   flex-wrap: wrap;
 }
+/* Thank-you page layout helpers */
+.thankyou-page {
+  min-height: 100vh;
+  position: relative;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.thankyou-page .top-home {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  z-index: 10;
+}
+
+.thankyou-page .bottom-home {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  z-index: 10;
+}
+
+/* Ensure the card doesn't hide behind the top button on small screens */
+.thankyou-page .step-card {
+  margin-top: 70px;
+}
 
 /* ===== Footer ===== */
 footer {
