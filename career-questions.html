@@ -8,9 +8,16 @@
 
   <style>
     .form-card { max-width: 980px; margin: 0 auto; }
+
+    /* Give the white card more room */
+    .intake-card {
+      padding: 34px;
+    }
+
     .section { margin-top: 26px; padding-top: 6px; }
     .section h2 { margin: 18px 0 10px; }
     label { display: block; margin: 12px 0 6px; font-weight: 600; }
+
     input, textarea, select {
       width: 100%;
       padding: 12px;
@@ -19,21 +26,33 @@
       font-size: 1rem;
       box-sizing: border-box;
     }
+
     textarea { min-height: 110px; }
+
     .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     @media (max-width: 720px) { .row { grid-template-columns: 1fr; } }
+
     .hint { font-size: 0.95rem; opacity: 0.85; margin-top: 4px; }
+
     .job-block, .edu-block {
       border: 1px solid rgba(0,0,0,0.10);
       border-radius: 14px;
       padding: 14px;
       margin-top: 12px;
     }
-    .actions { margin-top: 26px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+
+    .actions {
+      margin-top: 26px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
     .status { margin-top: 14px; font-size: 1rem; }
     .small { font-size: 0.95rem; opacity: 0.85; }
 
-    /* Put "Prefer to talk instead" near the submit buttons, centered */
+    /* Prefer-to-talk callout near submit, centered */
     .callout {
       margin-top: 18px;
       text-align: center;
@@ -54,7 +73,7 @@
 
 <main class="services form-card">
 
-  <form id="cq-form" class="step-card">
+  <form id="cq-form" class="step-card intake-card">
     <!-- BASIC INFO -->
     <div class="section">
       <h2>Basic Info</h2>
@@ -201,17 +220,17 @@
       <textarea name="hobbies" placeholder="Examples: climbing gyms, hiking, knitting, technology…"></textarea>
     </div>
 
-    <!-- QUESTIONS -->
+    <!-- STANDOUT -->
     <div class="section">
-      <h2>Questions (What makes you stand out?)</h2>
+      <h2>What makes you stand out?</h2>
 
       <label for="qLab">Do you have laboratory or science experience?</label>
       <textarea id="qLab" name="qLab"></textarea>
 
-      <label for="qData">Computers, data analysis, or technical tools?</label>
+      <label for="qData">Do you have experience with computers, data analysis, or technical tools?</label>
       <textarea id="qData" name="qData"></textarea>
 
-      <label for="qTeams">Experience working in teams, leading projects, or management?</label>
+      <label for="qTeams">Any experience working in teams, leading projects, or management?</label>
       <textarea id="qTeams" name="qTeams"></textarea>
 
       <label for="qAwards">Any certifications, awards, or recognitions?</label>
@@ -222,11 +241,10 @@
     </div>
 
     <div class="actions">
-      <button type="submit" class="cta-button">Submit</button>
+      <button id="submitBtn" type="submit" class="cta-button">Submit</button>
       <a href="index.html" class="secondary-button">← Back to Home</a>
     </div>
 
-    <!-- Moved up + centered -->
     <div class="callout">
       <p><strong>Prefer to talk instead?</strong></p>
       <a href="thankyou-resume.html" class="cta-button">Schedule a 30-Minute Intake Call</a>
@@ -238,19 +256,19 @@
 </main>
 
 <script>
-  const form = document.getElementById("cq-form");
-  const statusEl = document.getElementById("status");
-
-  // Stop old “draft” behavior from previous versions
-  // (This removes saved responses you were seeing.)
+  // Clear old draft data from your older page versions (prevents old responses appearing)
   localStorage.removeItem("careerQuestionsDraft");
 
-  // We are pausing email/back-end submission for now.
-  // This makes Submit ALWAYS work and ALWAYS redirect home.
+  const form = document.getElementById("cq-form");
+  const statusEl = document.getElementById("status");
+  const submitBtn = document.getElementById("submitBtn");
+
   form.addEventListener("submit", (e) => {
     e.preventDefault();
 
+    submitBtn.disabled = true;
     statusEl.textContent = "Submitted ✅ Redirecting to homepage…";
+
     form.reset();
 
     setTimeout(() => {
