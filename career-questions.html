@@ -10,9 +10,7 @@
     .form-card { max-width: 980px; margin: 0 auto; }
 
     /* Give the white card more room */
-    .intake-card {
-      padding: 34px;
-    }
+    .intake-card { padding: 34px; }
 
     .section { margin-top: 26px; padding-top: 6px; }
     .section h2 { margin: 18px 0 10px; }
@@ -73,7 +71,17 @@
 
 <main class="services form-card">
 
-  <form id="cq-form" class="step-card intake-card">
+  <!-- IMPORTANT: Post directly to your Google Apps Script Web App -->
+  <form id="cq-form"
+        class="step-card intake-card"
+        method="POST"
+        action="https://script.google.com/macros/s/AKfycbxjqBUIHnVlv7pmlVAWofXUznWXOdAP2f78sotba4rLDnmdw-vP1DCwjVdwbNQtcP5z/exec">
+
+    <!-- Honeypot anti-spam field (hidden). If a bot fills it, the script ignores. -->
+    <input type="text" name="website" tabindex="-1" autocomplete="off"
+           style="position:absolute;left:-9999px;opacity:0;height:0;width:0;"
+           aria-hidden="true">
+
     <!-- BASIC INFO -->
     <div class="section">
       <h2>Basic Info</h2>
@@ -263,17 +271,10 @@
   const statusEl = document.getElementById("status");
   const submitBtn = document.getElementById("submitBtn");
 
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-
+  form.addEventListener("submit", () => {
+    // Let the browser submit the form normally to Apps Script
     submitBtn.disabled = true;
-    statusEl.textContent = "Submitted ✅ Redirecting to homepage…";
-
-    form.reset();
-
-    setTimeout(() => {
-      window.location.href = "index.html?submitted=true";
-    }, 700);
+    statusEl.textContent = "Submitting…";
   });
 </script>
 
