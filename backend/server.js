@@ -16,10 +16,19 @@ app.use(express.json());
 
 // 🔑 PRICE ID → THANK YOU PAGE MAP
 const PRICE_TO_SUCCESS_PAGE = {
+  // Resume Writing
   "price_1SmuSIAdRfgqgRAmiM2CKoFV":
     "https://applyinterviewstart.com/thankyou-resume.html",
+
+  // Interview Prep
   "price_1SmuSdAdRfgqgRAmLlpOEYAl":
     "https://applyinterviewstart.com/thankyou-interview.html",
+
+  // Career Consult (REPLACE WITH YOUR REAL price_... ID)
+  "price_1SqipxPFQklnj0iwLoRPC1wg":
+    "https://applyinterviewstart.com/thankyou-consult.html",
+
+  // Bundle (optional legacy — safe to keep until you fully remove it)
   "price_1SmuSoAdRfgqgRAmj6VQOjAJ":
     "https://applyinterviewstart.com/thankyou-bundle.html",
 };
@@ -160,6 +169,11 @@ ApplyInterviewStart.com`,
 });
 
 app.get("/", (req, res) => res.send("OK"));
+
+app.get("/debug-prices", (req, res) => {
+  res.json({ prices: Object.keys(PRICE_TO_SUCCESS_PAGE) });
+});
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
