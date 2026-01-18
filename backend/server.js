@@ -7,13 +7,12 @@ const nodemailer = require("nodemailer");
 const app = express();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-// --- CORS for your frontend
 app.use(cors({
   origin: "https://applyinterviewstart.com",
   methods: ["GET", "POST"],
 }));
 
-// --- IMPORTANT: Stripe webhook needs RAW body (must be before express.json)
+// Stripe webhook needs RAW body
 app.post("/webhook", express.raw({ type: "application/json" }), async (req, res) => {
   const sig = req.headers["stripe-signature"];
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -32,17 +31,14 @@ app.post("/webhook", express.raw({ type: "application/json" }), async (req, res)
   }
 
   try {
-    // We only care about successful payments from Stripe Checkout
     if (event.type === "checkout.session.completed") {
       const session = event.data.object;
 
-      // Customer email collected by Checkout
       const customerEmail =
         (session.customer_details && session.customer_details.email) ||
         session.customer_email ||
         "";
 
-      // We'll use line items to know which price was purchased
       const lineItems = await stripe.checkout.sessions.listLineItems(session.id, { limit: 10 });
       const first = lineItems.data && lineItems.data[0];
       const priceId = first && first.price ? first.price.id : "";
@@ -53,14 +49,14 @@ app.post("/webhook", express.raw({ type: "application/json" }), async (req, res)
       }
 
       const transporter = makeTransporter_();
-
       const service = SERVICE_BY_PRICE_ID[priceId];
 
-      // If we don't recognize the price, just notify admin with basics
+      const adminTo = process.env.ADMIN_EMAIL || process.env.FROM_EMAIL || process.env.SMTP_USER;
+
       if (!service) {
         await transporter.sendMail({
           from: process.env.FROM_EMAIL || process.env.SMTP_USER,
-          to: process.env.ADMIN_EMAIL || process.env.FROM_EMAIL || process.env.SMTP_USER,
+          to: adminTo,
           subject: "Stripe purchase received (unknown priceId)",
           text:
 `A Stripe Checkout purchase completed.
@@ -75,11 +71,11 @@ Session ID: ${session.id}
         return res.status(200).json({ received: true });
       }
 
-      // Email to customer with scheduling link
+      // Customer email
       await transporter.sendMail({
         from: process.env.FROM_EMAIL || process.env.SMTP_USER,
         to: customerEmail,
-        subject: `${service.emailSubjectCustomer}`,
+        subject: service.emailSubjectCustomer,
         text:
 `Thanks — your payment is confirmed ✅
 
@@ -90,19 +86,16 @@ Schedule here:
 ${service.calendlyLink}
 
 If you don’t see a calendar invite, don’t worry — scheduling through the link above is enough.
-(If you use Google Calendar and the invite lands in Trash/Spam, you can still schedule using the link.)
 
 — ApplyInterviewStart
 https://applyinterviewstart.com`,
       });
 
-      // Email to you (admin) with quick info + link
-      const adminTo = process.env.ADMIN_EMAIL || process.env.FROM_EMAIL || process.env.SMTP_USER;
-
+      // Admin email
       await transporter.sendMail({
         from: process.env.FROM_EMAIL || process.env.SMTP_USER,
         to: adminTo,
-        subject: `${service.emailSubjectAdmin}`,
+        subject: service.emailSubjectAdmin,
         text:
 `New paid booking ✅
 
@@ -126,30 +119,32 @@ ${session.id}`,
   }
 });
 
-// After webhook route, use JSON parser for normal routes
+// Normal JSON routes
 app.use(express.json());
 
-// 🔑 PRICE ID → THANK YOU PAGE MAP (for redirect after checkout)
+// ✅ UPDATED: SUCCESS PAGES using your NEW price IDs
 const PRICE_TO_SUCCESS_PAGE = {
-  "price_1SmuSIAdRfgqgRAmiM2CKoFV": "https://applyinterviewstart.com/thankyou-resume.html",
-  "price_1SmuSdAdRfgqgRAmLlpOEYAl": "https://applyinterviewstart.com/thankyou-interview.html",
+  // Resume & CV Writing (NEW)
+  "price_1SmOIRAdRfgqgRAmdHnM1lfp": "https://applyinterviewstart.com/thankyou-resume.html",
+
+  // Interview Prep (NEW)
+  "price_1SmOQWAdRfgqgRAm2bnclGAh": "https://applyinterviewstart.com/thankyou-interview.html",
+
+  // Career Consult (working)
   "price_1SqjR0AdRfgqgRAmkhlk4xay": "https://applyinterviewstart.com/thankyou-consult.html",
-  "price_1SmuSoAdRfgqgRAmj6VQOjAJ": "https://applyinterviewstart.com/thankyou-bundle.html", // optional legacy
 };
 
-// ✅ Price → service info (used for webhook emails)
+// ✅ UPDATED: webhook email mapping using your NEW price IDs
 const SERVICE_BY_PRICE_ID = {
-  // Resume (you can keep this, but resume flow already has career questions + email)
-  "price_1SmuSIAdRfgqgRAmiM2CKoFV": {
-    name: "Resume Writing",
-    duration: "Async (form + follow-up)",
-    calendlyLink: "https://applyinterviewstart.com/thankyou-resume.html",
-    emailSubjectCustomer: "Your Resume Writing purchase is confirmed ✅",
-    emailSubjectAdmin: "New purchase: Resume Writing ✅",
+  "price_1SmOIRAdRfgqgRAmdHnM1lfp": {
+    name: "Resume & CV Writing",
+    duration: "Intake form + follow-up",
+    calendlyLink: "https://calendly.com/applyinterviewstart-4a8l/resume-follow-up?hide_event_type_details=1",
+    emailSubjectCustomer: "Resume & CV Writing confirmed ✅ Next steps",
+    emailSubjectAdmin: "New purchase: Resume & CV Writing ✅",
   },
 
-  // Interview Prep
-  "price_1SmuSdAdRfgqgRAmLlpOEYAl": {
+  "price_1SmOQWAdRfgqgRAm2bnclGAh": {
     name: "Interview Prep",
     duration: "1 hour",
     calendlyLink: "https://calendly.com/applyinterviewstart-4a8l/interview-prep?hide_event_type_details=1",
@@ -157,7 +152,6 @@ const SERVICE_BY_PRICE_ID = {
     emailSubjectAdmin: "New purchase: Interview Prep ✅",
   },
 
-  // Career Consult (TEST price you just created)
   "price_1SqjR0AdRfgqgRAmkhlk4xay": {
     name: "Career Consult",
     duration: "1 hour",
