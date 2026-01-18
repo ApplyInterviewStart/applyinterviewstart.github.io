@@ -39,5 +39,5 @@ function buyInterview() {
 
 function buyConsult() {
   // Career Consult ($99) — IMPORTANT: replace this placeholder with your Career Consult price ID
-  buyProduct("price_1SqipxPFQklnj0iwLoRPC1wg");
+  buyProduct("price_1SqjR0AdRfgqgRAmkhlk4xay");
 }
