@@ -7,6 +7,8 @@ const nodemailer = require("nodemailer");
 const app = express();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
+let LAST_WEBHOOK = { at: null, type: null, id: null };
+
 app.use(cors({
   origin: "https://applyinterviewstart.com",
   methods: ["GET", "POST"],
@@ -25,6 +27,8 @@ app.post("/webhook", express.raw({ type: "application/json" }), async (req, res)
   let event;
   try {
     event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
+    LAST_WEBHOOK = { at: new Date().toISOString(), type: event.type, id: event.id };
+
   } catch (err) {
     console.error("Webhook signature verification failed:", err.message);
     return res.status(400).send(`Webhook Error: ${err.message}`);
@@ -197,6 +201,11 @@ function makeTransporter_() {
 }
 
 app.get("/", (req, res) => res.send("OK"));
+
+app.get("/debug-webhook", (req, res) => {
+  res.json(LAST_WEBHOOK);
+});
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
