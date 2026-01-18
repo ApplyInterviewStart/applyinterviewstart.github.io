@@ -3,53 +3,59 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Resume Builder – Next Steps</title>
+  <title>Resume & CV Writing – Next Steps</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
 
-<a href="index.html" class="secondary-button">← Home</a>
+<body class="thankyou-page">
 
-<main class="step-card">
-  <h1>You're All Set 🎉</h1>
-  <p style="font-size:1.4rem;">
-    Thanks for purchasing the Resume Builder service.
-  </p>
+  <!-- Top-left Home -->
+  <a href="index.html" class="secondary-button top-home">← Home</a>
 
-  <hr style="margin:30px 0;">
-
-  <h2>Choose how you'd like to proceed:</h2>
-
-  <!-- OPTION A -->
-  <div class="step-card highlight">
-    <h3>Option A — Fill Out Career Questions</h3>
-    <p>
-      Answer a few questions so I can build your resume accurately.
-      After you submit, you’ll be redirected to the homepage.
-    </p>
-    <a href="career-questions.html" class="cta-button">
-      Start Career Questions
-    </a>
-  </div>
-
-  <!-- OPTION B -->
-  <div class="step-card">
-    <h3>Option B — 30-Minute Intake Call</h3>
-    <p>
-      Prefer to talk instead? Schedule a call and we’ll cover everything live.
+  <main class="step-card">
+    <h1>You’re All Set 🎉</h1>
+    <p style="font-size:1.4rem;">
+      Thanks for purchasing Resume &amp; CV Writing.
     </p>
 
-    <div class="calendly-inline-widget"
-         data-url="https://calendly.com/applyinterviewstart-4a8l/career-assessment-clone?hide_event_type_details=1"
-         style="min-width:320px;height:700px;">
+    <hr style="margin:30px 0;">
+
+    <h2>Choose how you'd like to proceed:</h2>
+
+    <!-- OPTION A -->
+    <div class="step-card highlight">
+      <h3>Option A — Fill Out the Intake Form</h3>
+      <p>
+        Answer a few questions so I can build your resume/CV accurately.
+        After you submit, you’ll be redirected to the homepage.
+      </p>
+      <a href="career-questions.html" class="cta-button">
+        Start Intake Form
+      </a>
     </div>
-    <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
-  </div>
 
-  <a href="index.html" class="secondary-button" style="margin-top:40px;">
-    ← Return to Homepage
-  </a>
-</main>
+    <!-- OPTION B -->
+    <div class="step-card">
+      <h3>Option B — Schedule a Resume Follow-Up Call</h3>
+      <p>
+        Prefer to talk instead? Schedule a session and we’ll cover everything live.
+      </p>
+
+      <div style="margin-top:18px;">
+        <!-- Calendly inline widget begin -->
+        <div
+          class="calendly-inline-widget"
+          data-url="https://calendly.com/applyinterviewstart-4a8l/resume-follow-up?hide_event_type_details=1"
+          style="min-width:320px;height:700px;">
+        </div>
+        <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+        <!-- Calendly inline widget end -->
+      </div>
+    </div>
+  </main>
+
+  <!-- Bottom-left Return to Homepage -->
+  <a href="index.html" class="secondary-button bottom-home">← Return to Homepage</a>
 
 </body>
 </html>

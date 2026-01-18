@@ -1,7 +1,6 @@
 // Stripe publishable key (TEST key is OK for testing)
 const stripe = Stripe("pk_test_51Sm7lWAdRfgqgRAmHFC3ixdrrrnLNoGklLSEOIgVwz951N2V87jC6hcfvri3q8dge01fO9KbIRmiv8833r10eqd3003ZRcQs3s");
 
-// Generic function to create checkout session
 async function buyProduct(priceId) {
   try {
     const response = await fetch("https://apply-interview-start.onrender.com/create-checkout-session", {
@@ -18,7 +17,6 @@ async function buyProduct(priceId) {
       return;
     }
 
-    // Redirect to Stripe Checkout
     window.location.href = session.url;
   } catch (error) {
     console.error("Checkout error:", error);
@@ -26,18 +24,17 @@ async function buyProduct(priceId) {
   }
 }
 
-// Button functions
+// UPDATED TEST PRICE IDs (your latest)
 function buyResume() {
-  // Resume Writing ($79) — replace price ID if needed
-  buyProduct("price_1SmuSIAdRfgqgRAmiM2CKoFV");
+  buyProduct("price_1SmOIRAdRfgqgRAmdHnM1lfp");
 }
 
 function buyInterview() {
-  // Interview Prep ($119) — replace price ID if needed
-  buyProduct("price_1SmuSdAdRfgqgRAmLlpOEYAl");
+  buyProduct("price_1SmOQWAdRfgqgRAm2bnclGAh");
 }
 
+// Your working Career Consult price (keep your existing one if it’s already working)
+// If yours is different, replace it here.
 function buyConsult() {
-  // Career Consult ($99) — IMPORTANT: replace this placeholder with your Career Consult price ID
   buyProduct("price_1SqjR0AdRfgqgRAmkhlk4xay");
 }
