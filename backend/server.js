@@ -25,7 +25,7 @@ const PRICE_TO_SUCCESS_PAGE = {
     "https://applyinterviewstart.com/thankyou-interview.html",
 
   // Career Consult (REPLACE WITH YOUR REAL price_... ID)
-  "price_1SqipxPFQklnj0iwLoRPC1wg":
+  "price_1SqjR0AdRfgqgRAmkhlk4xay":
     "https://applyinterviewstart.com/thankyou-consult.html",
 
   // Bundle (optional legacy — safe to keep until you fully remove it)
