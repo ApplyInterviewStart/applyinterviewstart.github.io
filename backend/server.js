@@ -7,30 +7,164 @@ const nodemailer = require("nodemailer");
 const app = express();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
+// --- CORS for your frontend
 app.use(cors({
   origin: "https://applyinterviewstart.com",
   methods: ["GET", "POST"],
 }));
 
+// --- IMPORTANT: Stripe webhook needs RAW body (must be before express.json)
+app.post("/webhook", express.raw({ type: "application/json" }), async (req, res) => {
+  const sig = req.headers["stripe-signature"];
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+
+  if (!webhookSecret) {
+    console.error("Missing STRIPE_WEBHOOK_SECRET env var");
+    return res.status(500).send("Server misconfigured");
+  }
+
+  let event;
+  try {
+    event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
+  } catch (err) {
+    console.error("Webhook signature verification failed:", err.message);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+  try {
+    // We only care about successful payments from Stripe Checkout
+    if (event.type === "checkout.session.completed") {
+      const session = event.data.object;
+
+      // Customer email collected by Checkout
+      const customerEmail =
+        (session.customer_details && session.customer_details.email) ||
+        session.customer_email ||
+        "";
+
+      // We'll use line items to know which price was purchased
+      const lineItems = await stripe.checkout.sessions.listLineItems(session.id, { limit: 10 });
+      const first = lineItems.data && lineItems.data[0];
+      const priceId = first && first.price ? first.price.id : "";
+
+      if (!customerEmail || !priceId) {
+        console.warn("Webhook completed but missing customerEmail or priceId", { customerEmail, priceId });
+        return res.status(200).json({ received: true });
+      }
+
+      const transporter = makeTransporter_();
+
+      const service = SERVICE_BY_PRICE_ID[priceId];
+
+      // If we don't recognize the price, just notify admin with basics
+      if (!service) {
+        await transporter.sendMail({
+          from: process.env.FROM_EMAIL || process.env.SMTP_USER,
+          to: process.env.ADMIN_EMAIL || process.env.FROM_EMAIL || process.env.SMTP_USER,
+          subject: "Stripe purchase received (unknown priceId)",
+          text:
+`A Stripe Checkout purchase completed.
+
+Email: ${customerEmail}
+Price ID: ${priceId}
+Session ID: ${session.id}
+
+(Price ID not mapped in SERVICE_BY_PRICE_ID on server)`,
+        });
+
+        return res.status(200).json({ received: true });
+      }
+
+      // Email to customer with scheduling link
+      await transporter.sendMail({
+        from: process.env.FROM_EMAIL || process.env.SMTP_USER,
+        to: customerEmail,
+        subject: `${service.emailSubjectCustomer}`,
+        text:
+`Thanks — your payment is confirmed ✅
+
+Service: ${service.name}
+Duration: ${service.duration}
+
+Schedule here:
+${service.calendlyLink}
+
+If you don’t see a calendar invite, don’t worry — scheduling through the link above is enough.
+(If you use Google Calendar and the invite lands in Trash/Spam, you can still schedule using the link.)
+
+— ApplyInterviewStart
+https://applyinterviewstart.com`,
+      });
+
+      // Email to you (admin) with quick info + link
+      const adminTo = process.env.ADMIN_EMAIL || process.env.FROM_EMAIL || process.env.SMTP_USER;
+
+      await transporter.sendMail({
+        from: process.env.FROM_EMAIL || process.env.SMTP_USER,
+        to: adminTo,
+        subject: `${service.emailSubjectAdmin}`,
+        text:
+`New paid booking ✅
+
+Service: ${service.name}
+Duration: ${service.duration}
+Customer email: ${customerEmail}
+
+Calendly link:
+${service.calendlyLink}
+
+Stripe Session:
+${session.id}`,
+        replyTo: customerEmail,
+      });
+    }
+
+    return res.status(200).json({ received: true });
+  } catch (err) {
+    console.error("Webhook handler error:", err.message);
+    return res.status(500).send("Webhook handler failed");
+  }
+});
+
+// After webhook route, use JSON parser for normal routes
 app.use(express.json());
 
-// 🔑 PRICE ID → THANK YOU PAGE MAP
+// 🔑 PRICE ID → THANK YOU PAGE MAP (for redirect after checkout)
 const PRICE_TO_SUCCESS_PAGE = {
-  // Resume Writing
-  "price_1SmuSIAdRfgqgRAmiM2CKoFV":
-    "https://applyinterviewstart.com/thankyou-resume.html",
+  "price_1SmuSIAdRfgqgRAmiM2CKoFV": "https://applyinterviewstart.com/thankyou-resume.html",
+  "price_1SmuSdAdRfgqgRAmLlpOEYAl": "https://applyinterviewstart.com/thankyou-interview.html",
+  "price_1SqjR0AdRfgqgRAmkhlk4xay": "https://applyinterviewstart.com/thankyou-consult.html",
+  "price_1SmuSoAdRfgqgRAmj6VQOjAJ": "https://applyinterviewstart.com/thankyou-bundle.html", // optional legacy
+};
+
+// ✅ Price → service info (used for webhook emails)
+const SERVICE_BY_PRICE_ID = {
+  // Resume (you can keep this, but resume flow already has career questions + email)
+  "price_1SmuSIAdRfgqgRAmiM2CKoFV": {
+    name: "Resume Writing",
+    duration: "Async (form + follow-up)",
+    calendlyLink: "https://applyinterviewstart.com/thankyou-resume.html",
+    emailSubjectCustomer: "Your Resume Writing purchase is confirmed ✅",
+    emailSubjectAdmin: "New purchase: Resume Writing ✅",
+  },
 
   // Interview Prep
-  "price_1SmuSdAdRfgqgRAmLlpOEYAl":
-    "https://applyinterviewstart.com/thankyou-interview.html",
+  "price_1SmuSdAdRfgqgRAmLlpOEYAl": {
+    name: "Interview Prep",
+    duration: "1 hour",
+    calendlyLink: "https://calendly.com/applyinterviewstart-4a8l/interview-prep?hide_event_type_details=1",
+    emailSubjectCustomer: "Interview Prep confirmed ✅ Schedule your session",
+    emailSubjectAdmin: "New purchase: Interview Prep ✅",
+  },
 
-  // Career Consult (REPLACE WITH YOUR REAL price_... ID)
-  "price_1SqjR0AdRfgqgRAmkhlk4xay":
-    "https://applyinterviewstart.com/thankyou-consult.html",
-
-  // Bundle (optional legacy — safe to keep until you fully remove it)
-  "price_1SmuSoAdRfgqgRAmj6VQOjAJ":
-    "https://applyinterviewstart.com/thankyou-bundle.html",
+  // Career Consult (TEST price you just created)
+  "price_1SqjR0AdRfgqgRAmkhlk4xay": {
+    name: "Career Consult",
+    duration: "1 hour",
+    calendlyLink: "https://calendly.com/applyinterviewstart-4a8l/career-consult?hide_event_type_details=1",
+    emailSubjectCustomer: "Career Consult confirmed ✅ Schedule your session",
+    emailSubjectAdmin: "New purchase: Career Consult ✅",
+  },
 };
 
 app.post("/create-checkout-session", async (req, res) => {
@@ -54,7 +188,7 @@ app.post("/create-checkout-session", async (req, res) => {
   }
 });
 
-function makeTransporter() {
+function makeTransporter_() {
   const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS } = process.env;
   if (!SMTP_HOST || !SMTP_PORT || !SMTP_USER || !SMTP_PASS) {
     throw new Error("Missing SMTP env vars. Set SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS.");
@@ -68,108 +202,7 @@ function makeTransporter() {
   });
 }
 
-const safe = (v) => (typeof v === "string" ? v.trim() : "");
-
-app.post("/submit-career-questions", async (req, res) => {
-  const adminEmail = process.env.ADMIN_EMAIL;
-  if (!adminEmail) return res.status(500).json({ error: "Server misconfigured: ADMIN_EMAIL not set." });
-
-  const b = req.body || {};
-
-  const clientEmail = safe(b.clientEmail);
-  const fullName = safe(b.fullName);
-
-  if (!clientEmail || !fullName) {
-    return res.status(400).json({ error: "Please provide your full name and email." });
-  }
-
-  const answersText =
-`Resume Builder Intake Form
-
-BASIC INFO
-Full Name: ${fullName}
-Email: ${clientEmail}
-Phone: ${safe(b.phone)}
-LinkedIn: ${safe(b.linkedin)}
-
-WORK EXPERIENCE
-Job #1 Title+Company: ${safe(b.job1Title)}
-Job #1 Dates: ${safe(b.job1Dates)}
-Job #1 Responsibilities/Contributions:
-${safe(b.job1Resp)}
-
-Job #2 Title+Company: ${safe(b.job2Title)}
-Job #2 Dates: ${safe(b.job2Dates)}
-Job #2 Responsibilities/Contributions:
-${safe(b.job2Resp)}
-
-Job #3 Title+Company: ${safe(b.job3Title)}
-Job #3 Dates: ${safe(b.job3Dates)}
-Job #3 Responsibilities/Contributions:
-${safe(b.job3Resp)}
-
-EDUCATION / CERTIFICATIONS
-#1: ${safe(b.edu1Name)} — ${safe(b.edu1Date)}
-#2: ${safe(b.edu2Name)} — ${safe(b.edu2Date)}
-#3: ${safe(b.edu3Name)} — ${safe(b.edu3Date)}
-
-SKILLS
-${safe(b.skills)}
-
-HOBBIES / INTERESTS
-${safe(b.hobbies)}
-
-QUESTIONS (STANDOUT)
-Lab/Science Experience:
-${safe(b.qLab)}
-
-Computers/Data Analysis/Technical Tools:
-${safe(b.qData)}
-
-Teams/Leadership/Projects/Management:
-${safe(b.qTeams)}
-
-Certifications/Awards/Recognitions:
-${safe(b.qAwards)}
-
-Resume Template Preferences:
-${safe(b.qTemplate)}
-`;
-
-  try {
-    const transporter = makeTransporter();
-
-    // Email to YOU
-    await transporter.sendMail({
-      from: process.env.FROM_EMAIL || process.env.SMTP_USER,
-      to: adminEmail,
-      subject: `New Resume Intake Form — ${fullName}`,
-      text: answersText,
-      replyTo: clientEmail,
-    });
-
-    // Confirmation email to CLIENT
-    await transporter.sendMail({
-      from: process.env.FROM_EMAIL || process.env.SMTP_USER,
-      to: clientEmail,
-      subject: "We received your Resume Builder intake ✅",
-      text:
-`Thanks, ${fullName} — we received your Resume Builder intake form.
-
-If you need to update anything, just reply to this email.
-
-ApplyInterviewStart.com`,
-    });
-
-    return res.json({ ok: true });
-  } catch (error) {
-    console.error("Email error:", error.message);
-    return res.status(500).json({ error: "Email failed to send. Please try again." });
-  }
-});
-
 app.get("/", (req, res) => res.send("OK"));
-
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
