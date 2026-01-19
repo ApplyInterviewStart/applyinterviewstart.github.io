@@ -13,7 +13,7 @@ app.use(cors({
 
 /**
  * PRICE ID → THANK YOU PAGE (redirect after Stripe checkout)
- * Make sure these match the price IDs you use in stripe.js
+ * Must match the price IDs used in stripe.js
  */
 const PRICE_TO_SUCCESS_PAGE = {
   // Resume & CV Writing
@@ -22,38 +22,38 @@ const PRICE_TO_SUCCESS_PAGE = {
   // Interview Prep
   "price_1SmOQWAdRfgqgRAm2bnclGAh": "https://applyinterviewstart.com/thankyou-interview.html",
 
-  // Career Consult (replace with your real working consult price ID if different)
+  // Career Consult
   "price_1SqjR0AdRfgqgRAmkhlk4xay": "https://applyinterviewstart.com/thankyou-consult.html",
 };
 
 /**
- * PRICE ID → Service info (used for purchase confirmation emails via Apps Script)
- * These emails are the "detour" so clients get details even if Google Calendar invites are flaky.
+ * Service info used for purchase emails (sent via Apps Script).
+ * IMPORTANT: Do NOT put scheduling links in the email.
+ * We will include the thank-you page instead (where the embed lives).
  */
 const SERVICE_BY_PRICE_ID = {
   "price_1SmOIRAdRfgqgRAmdHnM1lfp": {
     name: "Resume & CV Writing",
     duration: "Intake form + follow-up",
-    calendlyLink: "https://calendly.com/applyinterviewstart-4a8l/resume-follow-up?hide_event_type_details=1",
+    thankYouUrl: "https://applyinterviewstart.com/thankyou-resume.html",
   },
 
   "price_1SmOQWAdRfgqgRAm2bnclGAh": {
     name: "Interview Prep",
     duration: "1 hour",
-    calendlyLink: "https://calendly.com/applyinterviewstart-4a8l/interview-prep?hide_event_type_details=1",
+    thankYouUrl: "https://applyinterviewstart.com/thankyou-interview.html",
   },
 
-  // If your Career Consult calendly link differs, replace it here
   "price_1SqjR0AdRfgqgRAmkhlk4xay": {
     name: "Career Consult",
     duration: "1 hour",
-    calendlyLink: "https://calendly.com/applyinterviewstart-4a8l/career-consult?hide_event_type_details=1",
+    thankYouUrl: "https://applyinterviewstart.com/thankyou-consult.html",
   },
 };
 
 /**
- * Stripe webhook (secure verification) → forwards purchase info to Google Apps Script
- * IMPORTANT: must use express.raw BEFORE express.json
+ * Stripe webhook (verified) -> call Apps Script to send purchase confirmation email.
+ * IMPORTANT: express.raw BEFORE express.json
  */
 app.post("/webhook", express.raw({ type: "application/json" }), async (req, res) => {
   const sig = req.headers["stripe-signature"];
@@ -73,7 +73,6 @@ app.post("/webhook", express.raw({ type: "application/json" }), async (req, res)
   }
 
   try {
-    // We only care about successful payments from Stripe Checkout
     if (event.type === "checkout.session.completed") {
       const session = event.data.object;
 
@@ -82,7 +81,6 @@ app.post("/webhook", express.raw({ type: "application/json" }), async (req, res)
         session.customer_email ||
         "";
 
-      // Get the purchased price ID
       const lineItems = await stripe.checkout.sessions.listLineItems(session.id, { limit: 10 });
       const first = lineItems.data && lineItems.data[0];
       const priceId = first && first.price ? first.price.id : "";
@@ -102,22 +100,20 @@ app.post("/webhook", express.raw({ type: "application/json" }), async (req, res)
 
       const service = SERVICE_BY_PRICE_ID[priceId];
 
-      // Build payload for Apps Script
       const payload = service ? {
         secret: appsScriptSecret,
         customerEmail,
         serviceName: service.name,
         duration: service.duration,
-        calendlyLink: service.calendlyLink,
+        thankYouUrl: service.thankYouUrl,
       } : {
         secret: appsScriptSecret,
         customerEmail,
         serviceName: "Unknown Service (price not mapped)",
         duration: "",
-        calendlyLink: `Price ID: ${priceId}\nStripe Session: ${session.id}`,
+        thankYouUrl: "https://applyinterviewstart.com",
       };
 
-      // Forward to Apps Script (MailApp sends from applyinterviewstart@gmail.com)
       const resp = await fetch(appsScriptUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -140,11 +136,11 @@ app.post("/webhook", express.raw({ type: "application/json" }), async (req, res)
   }
 });
 
-// After webhook route, use JSON parser for normal routes
+// After webhook route, use JSON parser
 app.use(express.json());
 
 /**
- * Create Stripe Checkout Session (your website calls this from stripe.js)
+ * Create Stripe Checkout Session
  */
 app.post("/create-checkout-session", async (req, res) => {
   const { priceId } = req.body;
