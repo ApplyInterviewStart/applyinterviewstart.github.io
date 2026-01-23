@@ -33,6 +33,7 @@ header.hero p {
   max-width: 800px;
   margin: 0 auto 40px;
 }
+
 .page-container {
   max-width: 900px;
   margin: 80px auto;
@@ -60,6 +61,7 @@ header.hero p {
   max-width: 700px;
 }
 
+/* ===== Buttons (base styles) ===== */
 .cta-button {
   display: inline-block;
   background-color: #0070f3;
@@ -70,10 +72,6 @@ header.hero p {
   font-size: 1.2rem;
   cursor: pointer;
   border: none;
-}
-
-.cta-button:hover {
-  background-color: #0055aa;
 }
 
 /* ===== Services ===== */
@@ -169,6 +167,7 @@ section.next-steps {
   color: #4f46e5;
   font-size: 1.2rem;
   cursor: pointer;
+  text-decoration: none;
 }
 
 /* ===== Calendly Embed ===== */
@@ -219,12 +218,14 @@ form button {
   cursor: pointer;
 }
 
+/* Form button row */
 form .button-row {
   display: flex;
   gap: 20px;
   justify-content: center;
   flex-wrap: wrap;
 }
+
 /* Thank-you page layout helpers */
 .thankyou-page {
   min-height: 100vh;
@@ -266,4 +267,47 @@ footer {
   margin: 0 auto;
   font-size: 1rem;
   color: #ccc;
+}
+
+/* =========================================================
+   Pocket #1: Hover-only highlight animation for all buttons
+   (No default highlight; only on hover/focus)
+   ========================================================= */
+
+/* Smooth transitions (applies to links styled as buttons + actual buttons) */
+.cta-button,
+.secondary-button,
+.service-card button,
+form button {
+  transition: transform 140ms ease, box-shadow 140ms ease, filter 140ms ease;
+  will-change: transform, box-shadow;
+}
+
+/* Hover effect */
+.cta-button:hover,
+.secondary-button:hover,
+.service-card button:hover,
+form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.14);
+  filter: brightness(1.02);
+}
+
+/* Active (click) state */
+.cta-button:active,
+.secondary-button:active,
+.service-card button:active,
+form button:active {
+  transform: translateY(0px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+  filter: brightness(0.99);
+}
+
+/* Keyboard accessibility (visible focus ring only when tabbing) */
+.cta-button:focus-visible,
+.secondary-button:focus-visible,
+.service-card button:focus-visible,
+form button:focus-visible {
+  outline: 3px solid rgba(79, 70, 229, 0.55);
+  outline-offset: 3px;
 }
