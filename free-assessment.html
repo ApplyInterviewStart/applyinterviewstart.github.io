@@ -9,6 +9,8 @@
 </head>
 <body>
 
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
 <header class="hero">
   <h1>Free 15-Minute Career Assessment</h1>
   <p>
@@ -16,7 +18,7 @@
   </p>
 </header>
 
-<main class="services" style="max-width:980px;margin:0 auto;">
+<main id="main-content" class="services" style="max-width:980px;margin:0 auto;">
 
   <section class="step-card" style="margin-bottom:22px;">
     <h2>What We’ll Cover</h2>
@@ -34,11 +36,22 @@
       Choose a time below. After you book, you’ll receive an email confirmation with the meeting details and Google Meet link.
     </p>
 
+    <p style="margin-top:12px; max-width: 70ch;">
+      If the calendar doesn’t load, open it in a new tab:
+      <a href="https://calendly.com/applyinterviewstart-4a8l/free-career-assessment" target="_blank" rel="noopener">
+        Schedule on Calendly
+      </a>.
+      Or email <a href="mailto:applyinterviewstart@gmail.com">applyinterviewstart@gmail.com</a>.
+    </p>
+
     <div style="margin-top:18px;">
- <!-- Calendly inline widget begin -->
-<div class="calendly-inline-widget" data-url="https://calendly.com/applyinterviewstart-4a8l/free-career-assessment?hide_event_type_details=1" style="min-width:320px;height:700px;"></div>
-<script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
-<!-- Calendly inline widget end -->
+      <!-- Calendly inline widget begin -->
+      <div
+        class="calendly-inline-widget"
+        data-url="https://calendly.com/applyinterviewstart-4a8l/free-career-assessment?hide_event_type_details=1"
+        style="min-width:320px;height:700px;">
+      </div>
+      <!-- Calendly inline widget end -->
     </div>
   </section>
 
@@ -49,10 +62,9 @@
 </main>
 
 <script>
-  // Load Calendly widget script ONLY ONCE (prevents "Ada Embed has already been started")
+  // Load Calendly widget script ONLY ONCE
   (function loadCalendlyOnce() {
     if (document.getElementById("calendly-widget-js")) return;
-
     var s = document.createElement("script");
     s.id = "calendly-widget-js";
     s.src = "https://assets.calendly.com/assets/external/widget.js";

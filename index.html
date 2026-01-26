@@ -5,62 +5,90 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ApplyInterviewStart — Resume & Interview Services</title>
 
-  <!-- CSS -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
   <header class="hero">
     <h1>Your career support team for Applying, Interviewing, and Starting</h1>
-    </header>
+    <p>
+      Resume writing, CVs, and interview coaching for industry roles, graduate school,
+      scholarships, fellowships, and research positions.
+    </p>
+  </header>
 
-  <section id="services" class="services">
-    <h2>Our Services</h2>
+  <main id="main-content">
+    <section id="services" class="services" aria-labelledby="services-title">
+      <h2 id="services-title">Our Services</h2>
 
-    <!-- CAREER CONSULT -->
-    <div class="service-card">
-      <h3>Career Consult</h3>
-      <p>
-        A hands-on session working together on applications, interviews, and any stage of your career.
-        Highly recommended to get started or gain momentum.
-      </p>
-      <p class="price">$99</p>
-      <button onclick="buyConsult()">Schedule Career Consult</button>
-    </div>
+      <!-- CAREER CONSULT -->
+      <div class="service-card">
+        <h3>Career Consult</h3>
+        <p>
+          A hands-on session working together on applications, interviews, and any stage of your career.
+          Highly recommended to get started or gain momentum.
+        </p>
+        <p class="price">$99</p>
+        <button type="button" onclick="buyConsult()">Schedule Career Consult</button>
+      </div>
 
-    <!-- INTERVIEW PREP -->
-    <div class="service-card">
-      <h3>Interview Prep</h3>
-      <p>
-         Strategic planning and pratice sessions customized for your next interview. 
-      </p>
-      <p class="price">$119</p>
-      <button onclick="buyInterview()">Schedule Interview Prep</button>
-    </div>
+      <!-- INTERVIEW PREP -->
+      <div class="service-card">
+        <h3>Interview Prep</h3>
+        <p>
+          Strategic planning and practice sessions customized for your next interview.
+        </p>
+        <p class="price">$119</p>
+        <button type="button" onclick="buyInterview()">Schedule Interview Prep</button>
+      </div>
 
-    <!-- RESUME WRITING -->
-    <div class="service-card">
-      <h3>Resume & CV Writing</h3>
-      <p>
-        Resumes and CVs for professional and academic applications, specializing in engineering, manufacturing,
-        science, graduate programs, NSF grants and scholarships.
-      </p>
-      <p class="price">$79</p>
-      <button onclick="buyResume()">Schedule Resume & CV Service</button>
-    </div>
+      <!-- RESUME WRITING -->
+      <div class="service-card">
+        <h3>Resume &amp; CV Writing</h3>
+        <p>
+          Resumes and CVs for professional and academic applications, specializing in engineering, manufacturing,
+          science, graduate programs, NSF grants and scholarships.
+        </p>
+        <p class="price">$79</p>
+        <button type="button" onclick="buyResume()">Schedule Resume &amp; CV Service</button>
+      </div>
 
-    <!-- FREE ASSESSMENT -->
-    <div class="service-card free">
-      <h3>Free Career Assessment</h3>
-      <p>
-        Let's figure out your next best career move.
-      </p>
-      <p class="price">$0</p>
-      <button onclick="window.location.href='free-assessment.html'">
-        Schedule Free Assessment
-      </button>
-    </div>
+      <!-- FREE ASSESSMENT -->
+      <div class="service-card free">
+        <h3>Free Career Assessment</h3>
+        <p>
+          Let’s figure out your next best career move.
+        </p>
+        <p class="price">$0</p>
+        <button type="button" onclick="window.location.href='free-assessment.html'">
+          Schedule Free Assessment
+        </button>
+      </div>
 
-  </section>
+    </section>
 
-  <!-- Bottom navigation buttons -
+    <!-- Bottom navigation buttons -->
+    <section class="services" style="padding-top:0; max-width:980px; margin:0 auto;" aria-label="Site navigation">
+      <div style="display:flex; gap:14px; flex-wrap:wrap; justify-content:flex-start; margin-top:10px;">
+        <a href="#services" class="cta-button">View Services</a>
+        <a href="about.html" class="secondary-button">About Us</a>
+        <a href="contact.html" class="secondary-button">Contact Us</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>
+      © 2026 ApplyInterviewStart. All rights reserved.
+      · <a href="disclaimer.html">Disclaimers</a>
+      · <a href="contact.html">Contact</a>
+    </p>
+  </footer>
+
+  <script src="https://js.stripe.com/v3/"></script>
+  <script src="stripe.js"></script>
+
+</body>
+</html>

@@ -3,16 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Resume & CV Writing – Next Steps</title>
+  <title>Resume &amp; CV Writing – Next Steps</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body class="thankyou-page">
 
-  <!-- Top-left Home -->
-  <a href="index.html" class="secondary-button top-home">← Home</a>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
-  <main class="step-card">
+  <a href="index.html" class="secondary-button top-home" aria-label="Go to homepage">← Home</a>
+
+  <main id="main-content" class="step-card">
     <h1>You’re All Set 🎉</h1>
     <p style="font-size:1.4rem;">
       Thanks for purchasing Resume &amp; CV Writing.
@@ -23,7 +24,7 @@
     <h2>Choose how you'd like to proceed:</h2>
 
     <!-- OPTION A -->
-    <div class="step-card highlight">
+    <section class="step-card highlight" aria-label="Option A: Fill out the intake form">
       <h3>Option A — Fill Out the Intake Form</h3>
       <p>
         Answer a few questions so I can build your resume/CV accurately.
@@ -32,30 +33,45 @@
       <a href="career-questions.html" class="cta-button">
         Start Intake Form
       </a>
-    </div>
+    </section>
 
     <!-- OPTION B -->
-    <div class="step-card">
+    <section class="step-card" aria-label="Option B: Schedule a resume follow-up">
       <h3>Option B — Schedule a Resume Follow-Up</h3>
       <p>
         Prefer to talk instead? Schedule a session and we’ll cover everything live.
       </p>
 
+      <p style="margin-top:12px; max-width: 70ch; margin-left:auto; margin-right:auto;">
+        If the calendar doesn’t load, open it in a new tab:
+        <a href="https://calendly.com/applyinterviewstart-4a8l/resume-follow-up" target="_blank" rel="noopener">
+          Schedule on Calendly
+        </a>.
+        Or email <a href="mailto:applyinterviewstart@gmail.com">applyinterviewstart@gmail.com</a>.
+      </p>
+
       <div style="margin-top:18px;">
-        <!-- Calendly inline widget begin -->
         <div
           class="calendly-inline-widget"
           data-url="https://calendly.com/applyinterviewstart-4a8l/resume-follow-up?hide_event_type_details=1"
           style="min-width:320px;height:700px;">
         </div>
-        <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
-        <!-- Calendly inline widget end -->
       </div>
-    </div>
+    </section>
   </main>
 
-  <!-- Bottom-left Return to Homepage -->
-  <a href="index.html" class="secondary-button bottom-home">← Return to Homepage</a>
+  <a href="index.html" class="secondary-button bottom-home" aria-label="Return to homepage">← Return to Homepage</a>
+
+  <script>
+    (function loadCalendlyOnce() {
+      if (document.getElementById("calendly-widget-js")) return;
+      var s = document.createElement("script");
+      s.id = "calendly-widget-js";
+      s.src = "https://assets.calendly.com/assets/external/widget.js";
+      s.async = true;
+      document.body.appendChild(s);
+    })();
+  </script>
 
 </body>
 </html>
