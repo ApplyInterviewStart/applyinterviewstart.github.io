@@ -40,14 +40,20 @@
 </head>
 
 <body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
 <header class="hero">
   <h1>Resume Builder Intake Form</h1>
   <p>We’ll use this information to build a strong resume. Short answers are fine — details are welcome.</p>
 </header>
 
-<main class="services form-card">
+<main id="main-content" class="services form-card">
 
-  <form id="cq-form" class="step-card intake-card" novalidate>
+  <form id="cq-form" class="step-card intake-card" novalidate aria-describedby="required-note">
+    <p id="required-note" class="hint" style="margin-bottom:8px;">
+      Fields marked with * are required.
+    </p>
+
     <!-- honeypot -->
     <input type="text" name="website" tabindex="-1" autocomplete="off"
            style="position:absolute;left:-9999px;opacity:0;height:0;width:0;"
@@ -55,21 +61,24 @@
 
     <div class="section">
       <h2>Basic Info</h2>
+
       <div class="row">
         <div>
-          <label for="fullName">Full name</label>
-          <input id="fullName" name="fullName" type="text" required placeholder="First + Last">
+          <label for="fullName">Full name *</label>
+          <input id="fullName" name="fullName" type="text" required aria-required="true"
+                 placeholder="First + Last" autocomplete="name">
         </div>
         <div>
-          <label for="clientEmail">Email</label>
-          <input id="clientEmail" name="clientEmail" type="email" required placeholder="example@email.com">
+          <label for="clientEmail">Email *</label>
+          <input id="clientEmail" name="clientEmail" type="email" required aria-required="true"
+                 placeholder="example@email.com" autocomplete="email">
         </div>
       </div>
 
       <div class="row">
         <div>
           <label for="phone">Phone number</label>
-          <input id="phone" name="phone" type="tel" placeholder="(555) 555-5555">
+          <input id="phone" name="phone" type="tel" placeholder="(555) 555-5555" autocomplete="tel">
         </div>
         <div>
           <label for="linkedin">LinkedIn (URL)</label>
@@ -77,7 +86,7 @@
         </div>
       </div>
 
-      <p class="hint">Tip: If you don’t have LinkedIn, leave it blank.</p>
+      <p class="hint" id="linkedin-hint">Tip: If you don’t have LinkedIn, leave it blank.</p>
     </div>
 
     <div class="section">
@@ -89,11 +98,11 @@
         <div class="row">
           <div>
             <label for="job1Title">Title + Company</label>
-            <input id="job1Title" name="job1Title" type="text">
+            <input id="job1Title" name="job1Title" type="text" autocomplete="organization-title">
           </div>
           <div>
             <label for="job1Dates">Date range worked</label>
-            <input id="job1Dates" name="job1Dates" type="text">
+            <input id="job1Dates" name="job1Dates" type="text" placeholder="e.g., Jun 2023 – Dec 2025">
           </div>
         </div>
         <label for="job1Resp">Responsibilities & contributions</label>
@@ -109,7 +118,7 @@
           </div>
           <div>
             <label for="job2Dates">Date range worked</label>
-            <input id="job2Dates" name="job2Dates" type="text">
+            <input id="job2Dates" name="job2Dates" type="text" placeholder="e.g., Jan 2021 – May 2023">
           </div>
         </div>
         <label for="job2Resp">Responsibilities & contributions</label>
@@ -125,7 +134,7 @@
           </div>
           <div>
             <label for="job3Dates">Date range worked</label>
-            <input id="job3Dates" name="job3Dates" type="text">
+            <input id="job3Dates" name="job3Dates" type="text" placeholder="e.g., Aug 2019 – Dec 2020">
           </div>
         </div>
         <label for="job3Resp">Responsibilities & contributions</label>
@@ -146,7 +155,7 @@
           </div>
           <div>
             <label for="edu1Date">Date obtained</label>
-            <input id="edu1Date" name="edu1Date" type="text">
+            <input id="edu1Date" name="edu1Date" type="text" placeholder="e.g., May 2022">
           </div>
         </div>
       </div>
@@ -160,7 +169,7 @@
           </div>
           <div>
             <label for="edu2Date">Date obtained</label>
-            <input id="edu2Date" name="edu2Date" type="text">
+            <input id="edu2Date" name="edu2Date" type="text" placeholder="e.g., 2020">
           </div>
         </div>
       </div>
@@ -174,7 +183,7 @@
           </div>
           <div>
             <label for="edu3Date">Date obtained</label>
-            <input id="edu3Date" name="edu3Date" type="text">
+            <input id="edu3Date" name="edu3Date" type="text" placeholder="e.g., 2018">
           </div>
         </div>
       </div>
@@ -182,16 +191,16 @@
 
     <div class="section">
       <h2>Skills</h2>
-      <textarea name="skills"></textarea>
+      <textarea name="skills" placeholder="Tools, software, languages, technical skills…"></textarea>
 
       <h2>Hobbies / Interests</h2>
-      <textarea name="hobbies"></textarea>
+      <textarea name="hobbies" placeholder="Optional, but can help with personality and fit."></textarea>
     </div>
 
     <div class="section">
       <h2>What makes you stand out?</h2>
 
-      <label for="qLab">Do you have laboratory or science experience?</label>
+      <label for="qLab">Do you have laboratory or manufacturing experience?</label>
       <textarea id="qLab" name="qLab"></textarea>
 
       <label for="qData">Do you have experience with computers, data analysis, or technical tools?</label>
@@ -217,7 +226,7 @@
       <a href="thankyou-resume.html" class="cta-button">Schedule a 30-Minute Intake Call</a>
     </div>
 
-    <div id="status" class="status" aria-live="polite"></div>
+    <div id="status" class="status" role="status" aria-live="polite"></div>
   </form>
 
 </main>
@@ -235,20 +244,20 @@
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // basic browser validation
     if (!form.fullName.value.trim() || !form.clientEmail.value.trim()) {
       statusEl.textContent = "Please enter your full name and email.";
+      statusEl.setAttribute("role", "alert");
       return;
     }
 
     submitBtn.disabled = true;
     statusEl.textContent = "Submitting…";
+    statusEl.setAttribute("role", "status");
 
     try {
       const fd = new FormData(form);
       fd.append("userAgent", navigator.userAgent);
 
-      // no-cors means we can't read the response, but it prevents page navigation
       await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: fd });
 
       form.reset();
@@ -256,6 +265,7 @@
     } catch (err) {
       submitBtn.disabled = false;
       statusEl.textContent = "Network error. Please try again.";
+      statusEl.setAttribute("role", "alert");
     }
   });
 </script>
