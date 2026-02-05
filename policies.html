@@ -1,357 +1,135 @@
-/* ===== Reset ===== */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Policies | ApplyInterviewStart</title>
 
-body {
-  line-height: 1.6;
-  font-size: 18px;
-  background-color: #fafafa;
-  color: #111;
-}
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
 
-/* ===== Skip Link (Accessibility) ===== */
-.skip-link {
-  position: absolute;
-  left: -9999px;
-  top: 10px;
-  z-index: 9999;
-  background: #fff;
-  color: #111;
-  border: 2px solid #111;
-  padding: 10px 14px;
-  border-radius: 10px;
-  text-decoration: none;
-}
+<a class="skip-link" href="#main-content">Skip to main content</a>
 
-.skip-link:focus {
-  left: 10px;
-  outline: 3px solid rgba(79, 70, 229, 0.55);
-  outline-offset: 3px;
-}
+<header class="hero">
+  <h1>Policies</h1>
+  <p>
+    Clear expectations so you feel confident about what you’re purchasing.
+  </p>
+</header>
 
-/* ===== Hero ===== */
-header.hero {
-  background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
-    url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1950&q=80')
-    center/cover no-repeat;
-  color: #fff;
-  text-align: center;
-  padding: 120px 20px;
-}
+<main id="main-content" class="services" style="max-width:980px;margin:0 auto;">
 
-header.hero h1 {
-  font-size: 3.5rem;
-  margin-bottom: 20px;
-}
+  <!-- DISLCAIMERS (merged + de-duplicated) -->
+  <section class="step-card" style="margin-bottom:22px;">
+    <h2>General</h2>
+    <p style="margin-top:12px; max-width:75ch; font-size:1.5rem; line-height:1.7;">
+      ApplyInterviewStart provides career services such as resume and CV writing, interview preparation, and career consulting.
+      We are not a law firm, financial advisor, licensed recruiter, or employer. Our services are educational and advisory in nature.
+      ApplyInterviewStart is not affiliated with or endorsed by the National Science Foundation.
+    </p>
+  </section>
 
-header.hero p {
-  font-size: 1.6rem;
-  max-width: 800px;
-  margin: 0 auto 40px;
-}
+  <section class="step-card" style="margin-bottom:22px;">
+    <h2>No Guarantees</h2>
+    <p style="margin-top:12px; max-width:75ch; font-size:1.5rem; line-height:1.7;">
+      We do not guarantee interviews, job offers, compensation outcomes, admissions decisions, or any specific results.
+      Outcomes depend on many factors outside our control, including market conditions, employer preferences,
+      and your experience and performance.
+    </p>
+  </section>
 
-.page-container {
-  max-width: 900px;
-  margin: 80px auto;
-  padding: 0 20px;
-  text-align: center;
-}
+  <section class="step-card" style="margin-bottom:22px;">
+    <h2>Your Responsibility</h2>
+    <p style="margin-top:12px; max-width:75ch; font-size:1.5rem; line-height:1.7;">
+      You are responsible for verifying the accuracy of information in your resume/CV and application materials,
+      and for how you use our guidance. If you have legal, medical, or financial questions, consult a qualified professional.
+    </p>
+  </section>
 
-.page-container h1,
-.page-container h2 {
-  font-size: 2.4rem;
-  margin-bottom: 20px;
-}
+  <!-- REFUNDS -->
+  <section class="step-card" style="margin-bottom:22px;">
+    <h2>Refund &amp; Cancellation Policy</h2>
 
-.page-container p,
-.page-container li {
-  font-size: 1.3rem;
-  line-height: 1.7;
-}
+    <p style="margin-top:12px; max-width:75ch; font-size:1.5rem; line-height:1.7;">
+      ApplyInterviewStart provides time-based and custom professional services. Because of the nature of this work,
+      refunds are handled according to the guidelines below.
+    </p>
 
-.page-container ul {
-  list-style-position: inside;
-  margin: 30px auto;
-  padding: 0;
-  text-align: left;
-  max-width: 700px;
-}
+    <h3 style="margin-top:18px;">Career Consults &amp; Interview Prep (Scheduled Sessions)</h3>
+    <p style="margin-top:12px; max-width:75ch; font-size:1.5rem; line-height:1.7;">
+      Full refunds are available if you cancel at least <strong>24 hours</strong> before the scheduled session.
+      Missed sessions or cancellations made less than 24 hours before the scheduled time are generally not refundable.
+      If an emergency arises, contact us — we may offer a one-time reschedule at our discretion.
+    </p>
 
-/* ===== Buttons (base styles) ===== */
-.cta-button {
-  display: inline-block;
-  background-color: #0070f3;
-  color: #fff;
-  text-decoration: none;
-  padding: 18px 36px;
-  border-radius: 10px;
-  font-size: 1.2rem;
-  cursor: pointer;
-  border: none;
-  min-height: 44px; /* mobile tap target */
-}
+    <h3 style="margin-top:18px;">Resume &amp; CV Writing</h3>
+    <p style="margin-top:12px; max-width:75ch; font-size:1.5rem; line-height:1.7;">
+      If you request a refund before work has begun, you may receive a full refund.
+      Once work has started, refunds are generally not available because this service involves custom work.
+      If you’re dissatisfied, please reach out — we may offer reasonable revisions or other good-faith accommodations when appropriate.
+    </p>
 
-.secondary-button {
-  display: inline-block;
-  margin-top: 15px;
-  padding: 14px 26px;
-  border: 2px solid #4f46e5;
-  border-radius: 10px;
-  background: #fff;
-  color: #4f46e5;
-  font-size: 1.2rem;
-  cursor: pointer;
-  text-decoration: none;
-  min-height: 44px; /* mobile tap target */
-}
+    <h3 style="margin-top:18px;">Free Career Assessment</h3>
+    <p style="margin-top:12px; max-width:75ch; font-size:1.5rem; line-height:1.7;">
+      The Free Career Assessment is free and therefore not eligible for refunds.
+    </p>
 
-/* ===== Services ===== */
-section.services {
-  padding: 80px 20px;
-  max-width: 1100px;
-  margin: 0 auto;
-  text-align: center;
-}
+    <p style="margin-top:18px; max-width:75ch; font-size:1.5rem; line-height:1.7;">
+      Questions? Email <a href="mailto:applyinterviewstart@gmail.com">applyinterviewstart@gmail.com</a>.
+    </p>
+  </section>
 
-section.services h2 {
-  font-size: 2.8rem;
-  margin-bottom: 50px;
-}
+  <!-- TERMS -->
+  <section class="step-card" style="margin-bottom:22px;">
+    <h2>Terms of Service</h2>
 
-.service-card {
-  background-color: #f7f7f7;
-  border-radius: 16px;
-  padding: 40px;
-  margin-bottom: 40px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-}
+    <p style="margin-top:12px; max-width:75ch; font-size:1.5rem; line-height:1.7;">
+      By using ApplyInterviewStart and/or purchasing services, you agree to the terms below.
+    </p>
 
-.service-card h3 {
-  font-size: 2.2rem;
-  margin-bottom: 20px;
-}
+    <h3 style="margin-top:18px;">1) Services</h3>
+    <p style="margin-top:12px; max-width:75ch; font-size:1.5rem; line-height:1.7;">
+      ApplyInterviewStart provides career-related services including resume and CV writing, interview preparation,
+      career consulting, and assessments.
+    </p>
 
-.service-card p {
-  font-size: 1.3rem;
-  margin-bottom: 20px;
-}
+    <h3 style="margin-top:18px;">2) Payments</h3>
+    <p style="margin-top:12px; max-width:75ch; font-size:1.5rem; line-height:1.7;">
+      Payments are processed through Stripe. You agree to provide accurate billing information.
+      Refunds and cancellations are governed by the Refund &amp; Cancellation Policy on this page.
+    </p>
 
-.price {
-  font-weight: bold;
-  font-size: 2rem;
-  margin-bottom: 25px;
-}
+    <h3 style="margin-top:18px;">3) Scheduling &amp; Attendance</h3>
+    <p style="margin-top:12px; max-width:75ch; font-size:1.5rem; line-height:1.7;">
+      You are responsible for attending scheduled sessions on time. Missed sessions without adequate notice
+      may not be refunded. If you are running late, contact us as soon as possible.
+    </p>
 
-.service-card button {
-  background-color: #0070f3;
-  color: #fff;
-  border: none;
-  padding: 14px 30px;
-  border-radius: 10px;
-  font-size: 1.2rem;
-  cursor: pointer;
-  min-height: 44px; /* mobile tap target */
-}
+    <h3 style="margin-top:18px;">4) Intellectual Property</h3>
+    <p style="margin-top:12px; max-width:75ch; font-size:1.5rem; line-height:1.7;">
+      Templates, written materials, and guidance provided by ApplyInterviewStart are for your personal use.
+      You may not resell or redistribute our materials commercially without permission.
+    </p>
 
-.service-card.highlight {
-  background-color: #e0f0ff;
-  border: 3px solid #0070f3;
-}
+    <h3 style="margin-top:18px;">5) Limitation of Liability</h3>
+    <p style="margin-top:12px; max-width:75ch; font-size:1.5rem; line-height:1.7;">
+      To the maximum extent permitted by law, ApplyInterviewStart is not liable for indirect, incidental,
+      or consequential damages arising from use of our services.
+    </p>
 
-/* ===== Thank You / Next Steps ===== */
-section.next-steps {
-  max-width: 900px;
-  margin: 80px auto;
-  padding: 0 20px;
-}
+    <h3 style="margin-top:18px;">6) Updates</h3>
+    <p style="margin-top:12px; max-width:75ch; font-size:1.5rem; line-height:1.7;">
+      We may update these policies from time to time. Continued use of the site constitutes acceptance
+      of updated policies.
+    </p>
+  </section>
 
-.step-card {
-  background: #fff;
-  padding: 40px;
-  margin-bottom: 40px;
-  border-radius: 16px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-  text-align: center;
-}
+  <a href="index.html" class="secondary-button" style="margin-top:10px;display:inline-block;">
+    ← Back to Home
+  </a>
 
-.step-card h2 {
-  font-size: 2.4rem;
-  margin-bottom: 20px;
-}
+</main>
 
-.step-card p {
-  font-size: 1.4rem;
-  max-width: 700px;
-  margin: 0 auto 25px;
-}
-
-.step-card.highlight {
-  border: 3px solid #4f46e5;
-}
-
-/* ===== Calendly Embed ===== */
-/* Note: you are using .calendly-inline-widget (div), not iframe directly. */
-.calendly-inline-widget {
-  width: 100%;
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-/* ===== Career Questions Form ===== */
-form {
-  max-width: 900px;
-  margin: 60px auto;
-  padding: 0 20px;
-}
-
-form label {
-  display: block;
-  font-size: 1.3rem;
-  margin-bottom: 10px;
-  margin-top: 30px;
-  font-weight: bold;
-}
-
-form input,
-form textarea {
-  width: 100%;
-  max-width: 100%;
-  padding: 18px;
-  font-size: 1.2rem;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-}
-
-form textarea {
-  min-height: 160px;
-}
-
-form button {
-  margin-top: 40px;
-  padding: 16px 30px;
-  font-size: 1.2rem;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-  min-height: 44px; /* mobile tap target */
-}
-
-form .button-row {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-/* Thank-you page layout helpers */
-.thankyou-page {
-  min-height: 100vh;
-  position: relative;
-  padding: 24px;
-  box-sizing: border-box;
-}
-
-.thankyou-page .top-home {
-  position: absolute;
-  top: 24px;
-  left: 24px;
-  z-index: 10;
-}
-
-.thankyou-page .bottom-home {
-  position: absolute;
-  bottom: 24px;
-  left: 24px;
-  z-index: 10;
-}
-
-/* Ensure the card doesn't hide behind the top button on small screens */
-.thankyou-page .step-card {
-  margin-top: 70px;
-}
-
-/* ===== Footer ===== */
-footer {
-  background-color: #111;
-  color: #fff;
-  text-align: center;
-  padding: 50px 20px;
-  margin-top: 80px;
-}
-
-footer a {
-  color: #fff;
-  text-decoration: underline;
-}
-
-footer a:focus-visible {
-  outline: 3px solid rgba(255,255,255,0.7);
-  outline-offset: 3px;
-}
-
-.disclaimer {
-  max-width: 800px;
-  margin: 0 auto;
-  font-size: 1rem;
-  color: #ccc;
-}
-
-/* =========================================================
-   Hover-only highlight animation for all buttons
-   (No default highlight; only on hover/focus)
-   ========================================================= */
-.cta-button,
-.secondary-button,
-.service-card button,
-form button {
-  transition: transform 140ms ease, box-shadow 140ms ease, filter 140ms ease;
-  will-change: transform, box-shadow;
-}
-
-.cta-button:hover,
-.secondary-button:hover,
-.service-card button:hover,
-form button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 22px rgba(0,0,0,0.14);
-  filter: brightness(1.02);
-}
-
-.cta-button:active,
-.secondary-button:active,
-.service-card button:active,
-form button:active {
-  transform: translateY(0px);
-  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
-  filter: brightness(0.99);
-}
-
-/* Keyboard accessibility (visible focus ring only when tabbing) */
-.cta-button:focus-visible,
-.secondary-button:focus-visible,
-.service-card button:focus-visible,
-form button:focus-visible {
-  outline: 3px solid rgba(79, 70, 229, 0.55);
-  outline-offset: 3px;
-}
-
-/* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
-  .cta-button,
-  .secondary-button,
-  .service-card button,
-  form button {
-    transition: none !important;
-  }
-
-  .cta-button:hover,
-  .secondary-button:hover,
-  .service-card button:hover,
-  form button:hover {
-    transform: none !important;
-  }
-}
+</body>
+</html>
