@@ -33,42 +33,76 @@ body {
   outline-offset: 3px;
 }
 
-/* ===== Hero (NO background photo; logo dominates) ===== */
+/* =========================================================
+   HERO: Full-screen header with logo filling the viewport
+   ========================================================= */
 header.hero {
+  position: relative;
   background: #fafafa;
   color: #111;
   text-align: center;
-  padding: 40px 20px 28px;
+
+  /* Full viewport height with modern mobile support */
+  min-height: 100vh;
+  min-height: 100svh;
+
+  /* No padding — image handles spacing */
+  padding: 0;
+
+  /* Keep anything from spilling */
+  overflow: hidden;
+
+  /* A subtle separator for the transition to content */
   border-bottom: 1px solid rgba(0,0,0,0.06);
 }
 
-/* Big logo that takes most of the header */
+/* Logo fills the entire hero area (keeps aspect ratio, no stretching) */
 .hero-logo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+
+  /* Show the whole logo without cropping */
+  object-fit: contain;
+
+  /* Give the logo a bit of breathing room from edges */
+  padding: clamp(18px, 3.5vw, 48px);
+
   display: block;
-  margin: 0 auto 18px;
-  width: min(980px, 94vw);   /* BIG on desktop */
-  height: auto;
 }
 
-/* One-line sentence on desktop */
+/* Tagline sits INSIDE the hero at the bottom edge */
 .hero-tagline {
-  width: 100%;
-  margin: 0 auto;
-  text-align: center;
+  position: absolute;
+  left: 0;
+  right: 0;
 
-  /* Make it stretch across and stay single-line */
+  /* Sit at the bottom edge while respecting iPhone safe area */
+  bottom: 0;
+  padding: 16px 18px calc(16px + env(safe-area-inset-bottom));
+
+  /* Keep it readable over the logo */
+  color: #111;
+  text-shadow: 0 2px 10px rgba(255,255,255,0.75), 0 1px 0 rgba(255,255,255,0.5);
+
+  font-weight: 700;
+  font-size: clamp(1.1rem, 1.8vw, 1.6rem);
+  line-height: 1.2;
+
+  /* One line on desktop */
   white-space: nowrap;
 
-  /* Slightly smaller + responsive so it fits */
-  font-size: clamp(1.25rem, 1.9vw, 1.8rem);
-  font-weight: 600;
+  /* Ensure it stays clickable/selectable and above the image */
+  z-index: 2;
 }
 
-/* On small screens, allow wrapping (phone already looks good) */
+/* On small screens, allow wrapping so nothing gets cut off */
 @media (max-width: 720px) {
   .hero-tagline {
     white-space: normal;
-    font-size: 1.35rem;
+    font-size: 1.25rem;
+    padding: 14px 16px calc(14px + env(safe-area-inset-bottom));
   }
 }
 
