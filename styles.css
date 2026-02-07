@@ -35,19 +35,62 @@ body {
 
 /* ===== Hero ===== */
 header.hero {
-  background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
-    url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1950&q=80')
-    center/cover no-repeat;
+  /* "Fixed" hero background: remove random stock photo; use clean gradient */
+  background: linear-gradient(135deg, rgba(10, 12, 20, 1), rgba(20, 40, 70, 1));
   color: #fff;
   text-align: center;
-  padding: 120px 20px;
+  padding: 90px 20px;
+}
+
+/* Brand row: logo + text next to it */
+.hero-brand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+/* Your uploaded logo image */
+.brand-logo {
+  width: 120px;
+  height: auto;
+  display: block;
+}
+
+/* Text version of the name */
+.brand-name {
+  font-size: 3.0rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  line-height: 1.05;
+}
+
+/* Responsive */
+@media (max-width: 680px) {
+  header.hero {
+    padding: 70px 16px;
+  }
+
+  .brand-logo {
+    width: 95px;
+  }
+
+  .brand-name {
+    font-size: 2.2rem;
+  }
 }
 
 header.hero h1 {
-  font-size: 3.5rem;
-  margin-bottom: 20px;
+  font-size: 2.2rem;
+  margin-bottom: 0;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
+/* (You weren’t using header.hero p on this page, but keeping it for other pages) */
 header.hero p {
   font-size: 1.6rem;
   max-width: 800px;
@@ -194,7 +237,6 @@ section.next-steps {
 }
 
 /* ===== Calendly Embed ===== */
-/* Note: you are using .calendly-inline-widget (div), not iframe directly. */
 .calendly-inline-widget {
   width: 100%;
   border-radius: 12px;
@@ -293,16 +335,8 @@ footer a:focus-visible {
   outline-offset: 3px;
 }
 
-.disclaimer {
-  max-width: 800px;
-  margin: 0 auto;
-  font-size: 1rem;
-  color: #ccc;
-}
-
 /* =========================================================
    Hover-only highlight animation for all buttons
-   (No default highlight; only on hover/focus)
    ========================================================= */
 .cta-button,
 .secondary-button,
