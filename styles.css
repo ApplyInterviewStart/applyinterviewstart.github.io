@@ -34,12 +34,11 @@ body {
 }
 
 /* =========================================================
-   HERO: Full-screen logo header + tagline INSIDE at bottom
+   HERO: Full-screen logo stage (NO CROPPING)
    ========================================================= */
 header.hero {
   position: relative;
   background: #fafafa;
-  color: #111;
   text-align: center;
 
   /* Full viewport hero */
@@ -51,64 +50,42 @@ header.hero {
   border-bottom: 1px solid rgba(0,0,0,0.06);
 }
 
-/* Logo fills MOST of the hero (≈1.5x smaller than full cover) */
+/* Logo fills the hero WITHOUT cropping */
 .hero-logo {
   position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 
-  /* Desktop sizing */
-  inset: 16%;
-
-  width: auto;
-  height: auto;
-
-  object-fit: cover;
+  /* Key change: never crop */
+  object-fit: contain;
   object-position: center;
 
+  /* Small padding so it doesn’t kiss the edges */
+  padding: clamp(10px, 2.5vw, 34px);
+
   display: block;
-  z-index: 1;
 }
 
-/* Tagline is INSIDE the hero, at the bottom edge */
-.hero-tagline {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-
-  /* Padding keeps it off the edge but still at the bottom */
-  padding: 14px 18px calc(14px + env(safe-area-inset-bottom));
-  z-index: 2;
-
+/* Tagline moved below header (bigger than “Our Services”) */
+.site-tagline {
+  text-align: center;
   font-weight: 800;
 
-  /* Slightly bigger than “Our Services” (2.8rem) */
+  /* Our Services is 2.8rem — make this slightly bigger */
   font-size: clamp(2.9rem, 3.2vw, 3.35rem);
 
-  line-height: 1.1;
-
-  /* One line on desktop */
-  white-space: nowrap;
-
-  /* Readability over busy logo areas */
-  color: #111;
-  background: linear-gradient(to top, rgba(255,255,255,0.78), rgba(255,255,255,0));
-  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+  line-height: 1.12;
+  padding: 18px 20px 10px;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
-/* On small screens:
-   - ensure FULL triquetra is visible (no cropping)
-   - allow tagline wrapping and keep it readable */
+/* On small screens, keep it readable */
 @media (max-width: 720px) {
-  .hero-logo {
-    inset: 8%;
-    object-fit: contain; /* prevents the “only part of the green loop” issue */
-  }
-
-  .hero-tagline {
-    white-space: normal;
-    font-size: 2.15rem;
-    padding: 12px 14px calc(12px + env(safe-area-inset-bottom));
-    line-height: 1.15;
+  .site-tagline {
+    font-size: 2.05rem;
+    padding: 16px 16px 6px;
   }
 }
 
