@@ -36,7 +36,7 @@ body {
 /* ===== Hero (NO background photo) ===== */
 header.hero {
   /* Completely remove people background image */
-  background: #fafafa; /* clean light background */
+  background: #ffffff; /* clean light background */
   color: #111;         /* dark text so it stays visible */
   text-align: center;
   padding: 90px 20px;
