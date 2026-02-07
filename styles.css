@@ -9,7 +9,7 @@
 body {
   line-height: 1.6;
   font-size: 18px;
-  background-color: #ffffff;
+  background-color: #fafafa;
   color: #111;
 }
 
@@ -33,39 +33,33 @@ body {
   outline-offset: 3px;
 }
 
-/* ===== Hero (clean, no background image) ===== */
+/* ===== Hero (NO background photo) ===== */
 header.hero {
   position: relative;
   background: #fafafa;
   color: #111;
-  padding: 120px 20px 90px;
+  text-align: center;
+
+  /* extra top padding so the big logo doesn't overlap the tagline */
+  padding: 180px 20px 90px;
   border-bottom: 1px solid rgba(0,0,0,0.06);
 }
 
-/* Top-left brand block */
-.hero-brand {
+/* Top-left logo link */
+.hero-logo-link {
   position: absolute;
-  top: 28px;
-  left: 28px;
-
-  display: flex;
-  align-items: center;
-  gap: 18px;
+  top: 22px;
+  left: 22px;
+  display: inline-block;
+  text-decoration: none;
 }
 
-/* Much larger logo */
+/* MUCH bigger logo */
 .brand-logo {
-  width: 180px;
+  width: 320px;     /* BIG on desktop */
+  max-width: 48vw;  /* but don't overflow */
   height: auto;
   display: block;
-}
-
-/* Brand text */
-.brand-name {
-  font-size: 2.6rem;
-  font-weight: 800;
-  letter-spacing: 0.4px;
-  line-height: 1.1;
 }
 
 /* Centered tagline */
@@ -73,68 +67,36 @@ header.hero {
   max-width: 1200px;
   margin: 0 auto;
   text-align: center;
-
   font-size: 2.2rem;
-  font-weight: 500;
+  font-weight: 600;
 
-  /* Force single line on desktop */
+  /* Keep single line on desktop */
   white-space: nowrap;
 }
 
-/* ===== Responsive ===== */
-@media (max-width: 900px) {
+/* Allow wrapping on smaller screens */
+@media (max-width: 980px) {
   .hero-tagline {
-    white-space: normal; /* allow wrap on tablets/phones */
-    font-size: 1.9rem;
-  }
-}
-
-@media (max-width: 680px) {
-  header.hero {
-    padding: 140px 16px 70px;
-  }
-
-  .hero-brand {
-    top: 18px;
-    left: 18px;
-  }
-
-  .brand-logo {
-    width: 120px;
-  }
-
-  .brand-name {
+    white-space: normal;
     font-size: 2rem;
   }
 }
 
+/* Mobile sizing */
+@media (max-width: 680px) {
+  header.hero {
+    padding: 150px 16px 70px;
+  }
 
-/* ===== Buttons (base styles) ===== */
-.cta-button {
-  display: inline-block;
-  background-color: #0070f3;
-  color: #fff;
-  text-decoration: none;
-  padding: 18px 36px;
-  border-radius: 10px;
-  font-size: 1.2rem;
-  cursor: pointer;
-  border: none;
-  min-height: 44px; /* mobile tap target */
-}
+  .hero-logo-link {
+    top: 16px;
+    left: 16px;
+  }
 
-.secondary-button {
-  display: inline-block;
-  margin-top: 15px;
-  padding: 14px 26px;
-  border: 2px solid #4f46e5;
-  border-radius: 10px;
-  background: #fff;
-  color: #4f46e5;
-  font-size: 1.2rem;
-  cursor: pointer;
-  text-decoration: none;
-  min-height: 44px; /* mobile tap target */
+  .brand-logo {
+    width: 210px;   /* still big on mobile */
+    max-width: 75vw;
+  }
 }
 
 /* ===== Services ===== */
