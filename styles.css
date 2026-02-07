@@ -33,13 +33,14 @@ body {
   outline-offset: 3px;
 }
 
-/* ===== Hero ===== */
+/* ===== Hero (NO background photo) ===== */
 header.hero {
-  /* "Fixed" hero background: remove random stock photo; use clean gradient */
-  background: linear-gradient(135deg, rgba(10, 12, 20, 1), rgba(20, 40, 70, 1));
-  color: #fff;
+  /* Completely remove people background image */
+  background: #fafafa; /* clean light background */
+  color: #111;         /* dark text so it stays visible */
   text-align: center;
   padding: 90px 20px;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
 }
 
 /* Brand row: logo + text next to it */
@@ -54,7 +55,7 @@ header.hero {
 
 /* Your uploaded logo image */
 .brand-logo {
-  width: 120px;
+  width: 140px;
   height: auto;
   display: block;
 }
@@ -65,6 +66,7 @@ header.hero {
   font-weight: 800;
   letter-spacing: 0.5px;
   line-height: 1.05;
+  color: #111; /* ensure visible on light background */
 }
 
 /* Responsive */
@@ -74,7 +76,7 @@ header.hero {
   }
 
   .brand-logo {
-    width: 95px;
+    width: 110px;
   }
 
   .brand-name {
@@ -88,13 +90,15 @@ header.hero h1 {
   max-width: 900px;
   margin-left: auto;
   margin-right: auto;
+  color: #111; /* ensure visible */
 }
 
-/* (You weren’t using header.hero p on this page, but keeping it for other pages) */
+/* (Keeping this for other pages) */
 header.hero p {
   font-size: 1.6rem;
   max-width: 800px;
   margin: 0 auto 40px;
+  color: #111; /* ensure visible */
 }
 
 .page-container {
