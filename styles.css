@@ -55,7 +55,7 @@ header.hero {
 .hero-logo {
   position: absolute;
 
-  /* 🔽 THIS IS THE ONLY CHANGE */
+  /* Desktop sizing */
   inset: 16%;
 
   width: auto;
@@ -75,26 +75,40 @@ header.hero {
   right: 0;
   bottom: 0;
 
+  /* Padding keeps it off the edge but still at the bottom */
   padding: 14px 18px calc(14px + env(safe-area-inset-bottom));
   z-index: 2;
 
   font-weight: 800;
-  font-size: clamp(1.05rem, 1.8vw, 1.55rem);
-  line-height: 1.2;
 
+  /* Slightly bigger than “Our Services” (2.8rem) */
+  font-size: clamp(2.9rem, 3.2vw, 3.35rem);
+
+  line-height: 1.1;
+
+  /* One line on desktop */
   white-space: nowrap;
 
+  /* Readability over busy logo areas */
   color: #111;
   background: linear-gradient(to top, rgba(255,255,255,0.78), rgba(255,255,255,0));
   text-shadow: 0 1px 0 rgba(255,255,255,0.6);
 }
 
-/* On small screens, allow wrapping so nothing gets cut off */
+/* On small screens:
+   - ensure FULL triquetra is visible (no cropping)
+   - allow tagline wrapping and keep it readable */
 @media (max-width: 720px) {
+  .hero-logo {
+    inset: 8%;
+    object-fit: contain; /* prevents the “only part of the green loop” issue */
+  }
+
   .hero-tagline {
     white-space: normal;
-    font-size: 1.2rem;
+    font-size: 2.15rem;
     padding: 12px 14px calc(12px + env(safe-area-inset-bottom));
+    line-height: 1.15;
   }
 }
 
