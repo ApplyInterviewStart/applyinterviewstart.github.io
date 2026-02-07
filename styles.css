@@ -51,14 +51,17 @@ header.hero {
   border-bottom: 1px solid rgba(0,0,0,0.06);
 }
 
-/* Logo fills the hero (COVER means it may crop) */
+/* Logo fills MOST of the hero (≈1.5x smaller than full cover) */
 .hero-logo {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
 
-  object-fit: cover;     /* <-- this is the requested change */
+  /* 🔽 THIS IS THE ONLY CHANGE */
+  inset: 16%;
+
+  width: auto;
+  height: auto;
+
+  object-fit: cover;
   object-position: center;
 
   display: block;
@@ -72,7 +75,6 @@ header.hero {
   right: 0;
   bottom: 0;
 
-  /* Padding keeps it off the edge but still at the bottom */
   padding: 14px 18px calc(14px + env(safe-area-inset-bottom));
   z-index: 2;
 
@@ -80,10 +82,8 @@ header.hero {
   font-size: clamp(1.05rem, 1.8vw, 1.55rem);
   line-height: 1.2;
 
-  /* One line on desktop */
   white-space: nowrap;
 
-  /* Readability over busy logo areas */
   color: #111;
   background: linear-gradient(to top, rgba(255,255,255,0.78), rgba(255,255,255,0));
   text-shadow: 0 1px 0 rgba(255,255,255,0.6);
