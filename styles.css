@@ -33,70 +33,105 @@ body {
   outline-offset: 3px;
 }
 
-/* ===== Hero (NO background photo) ===== */
+/* ===== Hero (NO background photo; logo dominates) ===== */
 header.hero {
-  position: relative;
   background: #fafafa;
   color: #111;
   text-align: center;
-
-  /* extra top padding so the big logo doesn't overlap the tagline */
-  padding: 180px 20px 90px;
+  padding: 40px 20px 28px;
   border-bottom: 1px solid rgba(0,0,0,0.06);
 }
 
-/* Top-left logo link */
-.hero-logo-link {
-  position: absolute;
-  top: 22px;
-  left: 22px;
-  display: inline-block;
-  text-decoration: none;
-}
-
-/* MUCH bigger logo */
-.brand-logo {
-  width: 320px;     /* BIG on desktop */
-  max-width: 48vw;  /* but don't overflow */
-  height: auto;
+/* Big logo that takes most of the header */
+.hero-logo {
   display: block;
+  margin: 0 auto 18px;
+  width: min(980px, 94vw);   /* BIG on desktop */
+  height: auto;
 }
 
-/* Centered tagline */
+/* One-line sentence on desktop */
 .hero-tagline {
-  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
   text-align: center;
-  font-size: 2.2rem;
-  font-weight: 600;
 
-  /* Keep single line on desktop */
+  /* Make it stretch across and stay single-line */
   white-space: nowrap;
+
+  /* Slightly smaller + responsive so it fits */
+  font-size: clamp(1.25rem, 1.9vw, 1.8rem);
+  font-weight: 600;
 }
 
-/* Allow wrapping on smaller screens */
-@media (max-width: 980px) {
+/* On small screens, allow wrapping (phone already looks good) */
+@media (max-width: 720px) {
   .hero-tagline {
     white-space: normal;
-    font-size: 2rem;
+    font-size: 1.35rem;
   }
 }
 
-/* Mobile sizing */
-@media (max-width: 680px) {
-  header.hero {
-    padding: 150px 16px 70px;
-  }
+/* ===== (Keeping this for other pages) ===== */
+header.hero p {
+  font-size: 1.6rem;
+  max-width: 800px;
+  margin: 0 auto 40px;
+}
 
-  .hero-logo-link {
-    top: 16px;
-    left: 16px;
-  }
+.page-container {
+  max-width: 900px;
+  margin: 80px auto;
+  padding: 0 20px;
+  text-align: center;
+}
 
-  .brand-logo {
-    width: 210px;   /* still big on mobile */
-    max-width: 75vw;
-  }
+.page-container h1,
+.page-container h2 {
+  font-size: 2.4rem;
+  margin-bottom: 20px;
+}
+
+.page-container p,
+.page-container li {
+  font-size: 1.3rem;
+  line-height: 1.7;
+}
+
+.page-container ul {
+  list-style-position: inside;
+  margin: 30px auto;
+  padding: 0;
+  text-align: left;
+  max-width: 700px;
+}
+
+/* ===== Buttons (base styles) ===== */
+.cta-button {
+  display: inline-block;
+  background-color: #0070f3;
+  color: #fff;
+  text-decoration: none;
+  padding: 18px 36px;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border: none;
+  min-height: 44px; /* mobile tap target */
+}
+
+.secondary-button {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 14px 26px;
+  border: 2px solid #4f46e5;
+  border-radius: 10px;
+  background: #fff;
+  color: #4f46e5;
+  font-size: 1.2rem;
+  cursor: pointer;
+  text-decoration: none;
+  min-height: 44px; /* mobile tap target */
 }
 
 /* ===== Services ===== */
