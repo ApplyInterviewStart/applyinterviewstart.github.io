@@ -13,6 +13,13 @@ body {
   color: #111;
 }
 
+/* Desktop: make the overall site text a bit bigger */
+@media (min-width: 900px) {
+  body {
+    font-size: 20px;
+  }
+}
+
 /* ===== Skip Link (Accessibility) ===== */
 .skip-link {
   position: absolute;
@@ -34,14 +41,25 @@ body {
 }
 
 /* =========================================================
-   HERO: Full-screen logo stage (NO CROPPING)
+   HERO: Default header style for ALL non-home pages
    ========================================================= */
 header.hero {
+  background: #fafafa;
+  color: #111;
+  text-align: center;
+  padding: 40px 20px 28px;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+/* =========================================================
+   HOME HERO ONLY
+   ========================================================= */
+header.hero.hero--home {
   position: relative;
   background: #fafafa;
   text-align: center;
 
-  /* Full viewport hero */
+  /* Desktop: full-screen hero */
   min-height: 100vh;
   min-height: 100svh;
 
@@ -50,31 +68,51 @@ header.hero {
   border-bottom: 1px solid rgba(0,0,0,0.06);
 }
 
-/* Logo fills the hero WITHOUT cropping */
-.hero-logo {
+/* Home logo (no crop) */
+header.hero.hero--home .hero-logo {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
 
-  /* Key change: never crop */
   object-fit: contain;
   object-position: center;
 
-  /* Small padding so it doesn’t kiss the edges */
-  padding: clamp(10px, 2.5vw, 34px);
+  /* Desktop: make logo a little smaller (more padding) */
+  padding: clamp(18px, 4vw, 72px);
 
   display: block;
 }
 
-/* Tagline moved below header (bigger than “Our Services”) */
+/* ✅ MOBILE FIX:
+   Make the HOME hero match the logo's aspect better (square-ish), so it fills
+   the hero with no big blank space below (still NO CROPPING). */
+@media (max-width: 720px) {
+  header.hero.hero--home {
+    /* Square hero: fills width AND uses the vertical space more naturally */
+    height: 100vw;
+    min-height: 100vw;
+
+    /* But never exceed the viewport height */
+    max-height: 100svh;
+  }
+
+  header.hero.hero--home .hero-logo {
+    /* Keep left/right the same feel; remove vertical padding */
+    padding-left: 8%;
+    padding-right: 8%;
+    padding-top: 0;
+    padding-bottom: 0;
+
+    object-position: center;
+  }
+}
+
+/* Tagline below header (bigger than “Our Services”) */
 .site-tagline {
   text-align: center;
   font-weight: 800;
-
-  /* Our Services is 2.8rem — make this slightly bigger */
   font-size: clamp(2.9rem, 3.2vw, 3.35rem);
-
   line-height: 1.12;
   padding: 18px 20px 10px;
   max-width: 1100px;
@@ -83,21 +121,6 @@ header.hero {
 
 /* On small screens, keep it readable */
 @media (max-width: 720px) {
-
-  /* ✅ UPDATED: "maximize" logo toward the bottom (no cropping) */
-  .hero-logo {
-    /* keep the left/right fit you like */
-    padding-left: 8%;
-    padding-right: 8%;
-
-    /* remove vertical padding so it can use full height */
-    padding-top: 0%;
-    padding-bottom: 0%;
-
-    /* anchor the logo toward the bottom of the hero */
-    object-position: center bottom;
-  }
-
   .site-tagline {
     font-size: 2.05rem;
     padding: 16px 16px 6px;
