@@ -78,33 +78,34 @@ header.hero.hero--home .hero-logo {
   object-fit: contain;
   object-position: center;
 
-  /* Desktop: make logo a little smaller (more padding) */
-  padding: clamp(18px, 4vw, 72px);
+  /* ✅ Remove size-altering padding so the logo is maximized */
+  padding: 0;
 
   display: block;
 }
 
 /* ✅ MOBILE FIX:
-   Make the HOME hero match the logo's aspect better (square-ish), so it fills
-   the hero with no big blank space below (still NO CROPPING). */
+   Keep the square hero that fixed the gap (still NO CROPPING). */
 @media (max-width: 720px) {
   header.hero.hero--home {
-    /* Square hero: fills width AND uses the vertical space more naturally */
     height: 100vw;
     min-height: 100vw;
-
-    /* But never exceed the viewport height */
     max-height: 100svh;
   }
 
   header.hero.hero--home .hero-logo {
-    /* Keep left/right the same feel; remove vertical padding */
-    padding-left: 8%;
-    padding-right: 8%;
+    /* Keep left/right feel if you want a tiny buffer; set to 0 to truly flush edge-to-edge */
+    padding-left: 0;
+    padding-right: 0;
     padding-top: 0;
     padding-bottom: 0;
 
     object-position: center;
+  }
+
+  .site-tagline {
+    font-size: 2.05rem;
+    padding: 16px 16px 6px;
   }
 }
 
@@ -117,14 +118,6 @@ header.hero.hero--home .hero-logo {
   padding: 18px 20px 10px;
   max-width: 1100px;
   margin: 0 auto;
-}
-
-/* On small screens, keep it readable */
-@media (max-width: 720px) {
-  .site-tagline {
-    font-size: 2.05rem;
-    padding: 16px 16px 6px;
-  }
 }
 
 /* ===== (Keeping this for other pages) ===== */
