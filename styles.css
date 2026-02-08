@@ -84,13 +84,16 @@ header.hero {
 /* On small screens, keep it readable */
 @media (max-width: 720px) {
 
-  /* ✅ ONLY CHANGE FOR YOUR REQUEST:
-     Keep left/right perfect, reduce top/bottom whitespace */
+  /* ✅ UPDATED PER YOUR LAST REQUEST:
+     Keep left/right perfect, but use the hero's full vertical space */
   .hero-logo {
     padding-left: 8%;
     padding-right: 8%;
-    padding-top: 2%;
-    padding-bottom: 2%;
+    padding-top: 0%;
+    padding-bottom: 0%;
+
+    /* Helps it feel less "floating" on tall screens */
+    object-position: center top;
   }
 
   .site-tagline {
