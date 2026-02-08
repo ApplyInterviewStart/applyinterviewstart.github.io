@@ -34,14 +34,24 @@ body {
 }
 
 /* =========================================================
-   HERO: Full-screen logo stage (NO CROPPING)
+   HERO: Default header style for ALL non-home pages
    ========================================================= */
 header.hero {
-  position: relative;
   background: #fafafa;
+  color: #111;
+  text-align: center;
+  padding: 40px 20px 28px;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+/* =========================================================
+   HOME HERO ONLY: Full-screen logo stage (NO CROPPING)
+   ========================================================= */
+header.hero.hero--home {
+  position: relative;
   text-align: center;
 
-  /* Full viewport hero */
+  /* Full viewport hero (home page only) */
   min-height: 100vh;
   min-height: 100svh;
 
@@ -50,31 +60,36 @@ header.hero {
   border-bottom: 1px solid rgba(0,0,0,0.06);
 }
 
-/* Logo fills the hero WITHOUT cropping */
-.hero-logo {
+/* Logo fills the HOME hero WITHOUT cropping */
+header.hero.hero--home .hero-logo {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
 
-  /* Key change: never crop */
   object-fit: contain;
   object-position: center;
 
-  /* Small padding so it doesn’t kiss the edges */
   padding: clamp(10px, 2.5vw, 34px);
-
   display: block;
+}
+
+/* Home-only mobile tuning (keeps left/right, uses full vertical space) */
+@media (max-width: 720px) {
+  header.hero.hero--home .hero-logo {
+    padding-left: 8%;
+    padding-right: 8%;
+    padding-top: 0%;
+    padding-bottom: 0%;
+    object-position: center top;
+  }
 }
 
 /* Tagline moved below header (bigger than “Our Services”) */
 .site-tagline {
   text-align: center;
   font-weight: 800;
-
-  /* Our Services is 2.8rem — make this slightly bigger */
   font-size: clamp(2.9rem, 3.2vw, 3.35rem);
-
   line-height: 1.12;
   padding: 18px 20px 10px;
   max-width: 1100px;
@@ -83,19 +98,6 @@ header.hero {
 
 /* On small screens, keep it readable */
 @media (max-width: 720px) {
-
-  /* ✅ UPDATED PER YOUR LAST REQUEST:
-     Keep left/right perfect, but use the hero's full vertical space */
-  .hero-logo {
-    padding-left: 8%;
-    padding-right: 8%;
-    padding-top: 0%;
-    padding-bottom: 0%;
-
-    /* Helps it feel less "floating" on tall screens */
-    object-position: center top;
-  }
-
   .site-tagline {
     font-size: 2.05rem;
     padding: 16px 16px 6px;
@@ -106,7 +108,7 @@ header.hero {
 header.hero p {
   font-size: 1.6rem;
   max-width: 800px;
-  margin: 0 auto 40px;
+  margin: 0 auto 0;
 }
 
 .page-container {
