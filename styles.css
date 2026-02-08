@@ -34,24 +34,14 @@ body {
 }
 
 /* =========================================================
-   HERO: Default header style for ALL non-home pages
+   HERO: Full-screen logo stage (NO CROPPING)
    ========================================================= */
 header.hero {
-  background: #fafafa;
-  color: #111;
-  text-align: center;
-  padding: 40px 20px 28px;
-  border-bottom: 1px solid rgba(0,0,0,0.06);
-}
-
-/* =========================================================
-   HOME HERO ONLY: Full-screen logo stage (NO CROPPING)
-   ========================================================= */
-header.hero.hero--home {
   position: relative;
+  background: #fafafa;
   text-align: center;
 
-  /* Full viewport hero (home page only) */
+  /* Full viewport hero */
   min-height: 100vh;
   min-height: 100svh;
 
@@ -60,44 +50,31 @@ header.hero.hero--home {
   border-bottom: 1px solid rgba(0,0,0,0.06);
 }
 
-/* Logo fills the HOME hero WITHOUT cropping */
-header.hero.hero--home .hero-logo {
+/* Logo fills the hero WITHOUT cropping */
+.hero-logo {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
 
-  /* Never crop */
+  /* Key change: never crop */
   object-fit: contain;
+  object-position: center;
 
-  /* ✅ Key fix: anchor to top so it doesn't leave a huge blank below */
-  object-position: center top;
-
-  /* ✅ Key fix: keep left/right spacing, remove top/bottom spacing */
-  padding-left: clamp(10px, 2.5vw, 34px);
-  padding-right: clamp(10px, 2.5vw, 34px);
-  padding-top: 0;
-  padding-bottom: 0;
+  /* Small padding so it doesn’t kiss the edges */
+  padding: clamp(10px, 2.5vw, 34px);
 
   display: block;
-}
-
-/* Home-only mobile tuning (keeps left/right, uses full vertical space) */
-@media (max-width: 720px) {
-  header.hero.hero--home .hero-logo {
-    padding-left: 8%;
-    padding-right: 8%;
-    padding-top: 0%;
-    padding-bottom: 0%;
-    object-position: center top;
-  }
 }
 
 /* Tagline moved below header (bigger than “Our Services”) */
 .site-tagline {
   text-align: center;
   font-weight: 800;
+
+  /* Our Services is 2.8rem — make this slightly bigger */
   font-size: clamp(2.9rem, 3.2vw, 3.35rem);
+
   line-height: 1.12;
   padding: 18px 20px 10px;
   max-width: 1100px;
@@ -106,6 +83,21 @@ header.hero.hero--home .hero-logo {
 
 /* On small screens, keep it readable */
 @media (max-width: 720px) {
+
+  /* ✅ UPDATED: "maximize" logo toward the bottom (no cropping) */
+  .hero-logo {
+    /* keep the left/right fit you like */
+    padding-left: 8%;
+    padding-right: 8%;
+
+    /* remove vertical padding so it can use full height */
+    padding-top: 0%;
+    padding-bottom: 0%;
+
+    /* anchor the logo toward the bottom of the hero */
+    object-position: center bottom;
+  }
+
   .site-tagline {
     font-size: 2.05rem;
     padding: 16px 16px 6px;
@@ -116,7 +108,7 @@ header.hero.hero--home .hero-logo {
 header.hero p {
   font-size: 1.6rem;
   max-width: 800px;
-  margin: 0 auto 0;
+  margin: 0 auto 40px;
 }
 
 .page-container {
