@@ -67,10 +67,18 @@ header.hero.hero--home .hero-logo {
   width: 100%;
   height: 100%;
 
+  /* Never crop */
   object-fit: contain;
-  object-position: center;
 
-  padding: clamp(10px, 2.5vw, 34px);
+  /* ✅ Key fix: anchor to top so it doesn't leave a huge blank below */
+  object-position: center top;
+
+  /* ✅ Key fix: keep left/right spacing, remove top/bottom spacing */
+  padding-left: clamp(10px, 2.5vw, 34px);
+  padding-right: clamp(10px, 2.5vw, 34px);
+  padding-top: 0;
+  padding-bottom: 0;
+
   display: block;
 }
 
