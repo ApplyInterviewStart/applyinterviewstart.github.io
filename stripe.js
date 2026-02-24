@@ -1,7 +1,7 @@
 const stripe = Stripe("pk_live_51Sm7lWAdRfgqgRAmkkprO4VYYaiNWKJUyf88oxpNUynGT04Upm5WFKaFdCpZnKWdq4GoRNR7xR9nYJE4TIkyaKdk00vlyLXjQJ");
 
 // $1 LIVE TEST toggle
-const USE_LIVE_TEST_PRICE = true;
+const USE_LIVE_TEST_PRICE = false;
 
 // Shared $1 LIVE price (your standalone $1 product)
 const LIVE_TEST_PRICE_ID = "price_1SydUOAdRfgqgRAm3XWwEWtM";
