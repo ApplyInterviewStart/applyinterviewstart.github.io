@@ -11,44 +11,38 @@ app.use(cors({
   methods: ["GET", "POST"],
 }));
 
-/**
- * PRICE ID → THANK YOU PAGE (redirect after Stripe checkout)
- * Must match the price IDs used in stripe.js
- */
-const PRICE_TO_SUCCESS_PAGE = {
-  // Resume & CV Writing
-  "price_1SmOIRAdRfgqgRAmdHnM1lfp": "https://applyinterviewstart.com/thankyou-resume.html",
-
-  // Interview Prep
-  "price_1SmOQWAdRfgqgRAm2bnclGAh": "https://applyinterviewstart.com/thankyou-interview.html",
-
-  // Career Consult
-  "price_1SqjR0AdRfgqgRAmkhlk4xay": "https://applyinterviewstart.com/thankyou-consult.html",
-};
-
-/**
- * Service info used for purchase emails (sent via Apps Script).
- * IMPORTANT: Do NOT put scheduling links in the email.
- * We will include the thank-you page instead (where the embed lives).
- */
-const SERVICE_BY_PRICE_ID = {
-  "price_1SmOIRAdRfgqgRAmdHnM1lfp": {
-    name: "Resume & CV Writing",
+// =============================
+// SERVICE CONFIG (single source of truth)
+// =============================
+const SERVICE_BY_KEY = {
+  resume: {
+    name: "Resume & CV Writer",
     duration: "Intake form + follow-up",
     thankYouUrl: "https://applyinterviewstart.com/thankyou-resume.html",
   },
-
-  "price_1SmOQWAdRfgqgRAm2bnclGAh": {
+  interview: {
     name: "Interview Prep",
     duration: "1 hour",
     thankYouUrl: "https://applyinterviewstart.com/thankyou-interview.html",
   },
-
-  "price_1SqjR0AdRfgqgRAmkhlk4xay": {
+  consult: {
     name: "Career Consult",
     duration: "1 hour",
     thankYouUrl: "https://applyinterviewstart.com/thankyou-consult.html",
   },
+};
+
+// (Optional) Keep this for backward compatibility if any older links exist
+const PRICE_TO_SUCCESS_PAGE = {
+  "price_1SmOIRAdRfgqgRAmdHnM1lfp": SERVICE_BY_KEY.resume.thankYouUrl,
+  "price_1SmOQWAdRfgqgRAm2bnclGAh": SERVICE_BY_KEY.interview.thankYouUrl,
+  "price_1SqjR0AdRfgqgRAmkhlk4xay": SERVICE_BY_KEY.consult.thankYouUrl,
+};
+
+const SERVICE_BY_PRICE_ID = {
+  "price_1SmOIRAdRfgqgRAmdHnM1lfp": SERVICE_BY_KEY.resume,
+  "price_1SmOQWAdRfgqgRAm2bnclGAh": SERVICE_BY_KEY.interview,
+  "price_1SqjR0AdRfgqgRAmkhlk4xay": SERVICE_BY_KEY.consult,
 };
 
 /**
@@ -81,12 +75,19 @@ app.post("/webhook", express.raw({ type: "application/json" }), async (req, res)
         session.customer_email ||
         "";
 
-      const lineItems = await stripe.checkout.sessions.listLineItems(session.id, { limit: 10 });
-      const first = lineItems.data && lineItems.data[0];
-      const priceId = first && first.price ? first.price.id : "";
+      // Prefer metadata (needed for $1 test where all priceIds are identical)
+      const serviceKey = session.metadata && session.metadata.serviceKey ? session.metadata.serviceKey : "";
 
-      if (!customerEmail || !priceId) {
-        console.warn("Webhook missing customerEmail or priceId", { customerEmail, priceId });
+      // Fallback to priceId lookup if metadata missing
+      let priceId = "";
+      if (!serviceKey) {
+        const lineItems = await stripe.checkout.sessions.listLineItems(session.id, { limit: 10 });
+        const first = lineItems.data && lineItems.data[0];
+        priceId = first && first.price ? first.price.id : "";
+      }
+
+      if (!customerEmail) {
+        console.warn("Webhook missing customerEmail");
         return res.status(200).json({ received: true });
       }
 
@@ -98,7 +99,10 @@ app.post("/webhook", express.raw({ type: "application/json" }), async (req, res)
         return res.status(500).send("Server misconfigured");
       }
 
-      const service = SERVICE_BY_PRICE_ID[priceId];
+      const service =
+        (serviceKey && SERVICE_BY_KEY[serviceKey]) ||
+        (priceId && SERVICE_BY_PRICE_ID[priceId]) ||
+        null;
 
       const payload = service ? {
         secret: appsScriptSecret,
@@ -109,7 +113,7 @@ app.post("/webhook", express.raw({ type: "application/json" }), async (req, res)
       } : {
         secret: appsScriptSecret,
         customerEmail,
-        serviceName: "Unknown Service (price not mapped)",
+        serviceName: "Unknown Service (not mapped)",
         duration: "",
         thankYouUrl: "https://applyinterviewstart.com",
       };
@@ -143,11 +147,16 @@ app.use(express.json());
  * Create Stripe Checkout Session
  */
 app.post("/create-checkout-session", async (req, res) => {
-  const { priceId } = req.body;
-  const successUrl = PRICE_TO_SUCCESS_PAGE[priceId];
+  const { priceId, serviceKey } = req.body;
 
-  if (!successUrl) {
-    return res.status(400).json({ error: "Invalid price ID" });
+  // Prefer serviceKey routing (works for $1 test)
+  const service = serviceKey && SERVICE_BY_KEY[serviceKey] ? SERVICE_BY_KEY[serviceKey] : null;
+
+  // Backward compatibility: fallback to old price mapping
+  const successUrl = service ? service.thankYouUrl : PRICE_TO_SUCCESS_PAGE[priceId];
+
+  if (!priceId || !successUrl) {
+    return res.status(400).json({ error: "Invalid request (missing priceId or mapping)" });
   }
 
   try {
@@ -156,6 +165,11 @@ app.post("/create-checkout-session", async (req, res) => {
       line_items: [{ price: priceId, quantity: 1 }],
       success_url: successUrl,
       cancel_url: "https://applyinterviewstart.com/?canceled=true",
+
+      // Critical: store serviceKey so webhook can identify service even if priceId is $1
+      metadata: {
+        serviceKey: serviceKey || "",
+      },
     });
 
     res.json({ url: session.url });
