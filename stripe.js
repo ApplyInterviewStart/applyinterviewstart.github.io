@@ -1,12 +1,6 @@
 const stripe = Stripe("pk_live_51Sm7lWAdRfgqgRAmkkprO4VYYaiNWKJUyf88oxpNUynGT04Upm5WFKaFdCpZnKWdq4GoRNR7xR9nYJE4TIkyaKdk00vlyLXjQJ");
 
-// $1 LIVE TEST toggle
-const USE_LIVE_TEST_PRICE = false;
-
-// Shared $1 LIVE price (your standalone $1 product)
-const LIVE_TEST_PRICE_ID = "price_1SydUOAdRfgqgRAm3XWwEWtM";
-
-// Real LIVE prices (inside each service product)
+// LIVE price IDs (production)
 const LIVE_PRICE_RESUME = "price_1SydgnAdRfgqgRAmUUpti9gd";
 const LIVE_PRICE_INTERVIEW = "price_1SyfTgAdRfgqgRAmXHjZBE15";
 const LIVE_PRICE_CONSULT = "price_1SyfW2AdRfgqgRAm7PCZnG4V";
@@ -35,16 +29,13 @@ async function buyProduct(priceId, serviceKey) {
 }
 
 function buyResume() {
-  const priceId = USE_LIVE_TEST_PRICE ? LIVE_TEST_PRICE_ID : LIVE_PRICE_RESUME;
-  buyProduct(priceId, "resume");
+  buyProduct(LIVE_PRICE_RESUME, "resume");
 }
 
 function buyInterview() {
-  const priceId = USE_LIVE_TEST_PRICE ? LIVE_TEST_PRICE_ID : LIVE_PRICE_INTERVIEW;
-  buyProduct(priceId, "interview");
+  buyProduct(LIVE_PRICE_INTERVIEW, "interview");
 }
 
 function buyConsult() {
-  const priceId = USE_LIVE_TEST_PRICE ? LIVE_TEST_PRICE_ID : LIVE_PRICE_CONSULT;
-  buyProduct(priceId, "consult");
+  buyProduct(LIVE_PRICE_CONSULT, "consult");
 }
